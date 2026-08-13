@@ -1,0 +1,129 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}For Students — Metropolitan University{% endblock %}
+{% block meta_description %}Resources, tools, and information for current Metropolitan University students — academics, housing, wellness, and campus life.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/undergrad-students.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Information For</p>
+    <h1 class="page-hero-title">Student Resources</h1>
+    <p class="page-hero-subtitle">Everything you need to succeed, thrive, and make the most of your Metropolitan experience.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Students</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Quick Access</h2>
+      <p class="page-section-subtitle">Find the most important tools and resources for your day-to-day life at Metropolitan.</p>
+      <div class="page-cards-grid">
+        <article class="page-card">
+          <div class="page-card-body" style="padding-top:32px;">
+            <div class="page-list-icon" style="margin-bottom:16px;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
+            </div>
+            <div class="page-card-tag">Academic</div>
+            <h3 class="page-card-title">Student Portal</h3>
+            <p class="page-card-desc">Check your grades, course schedule, results, and academic progress through your personalized dashboard.</p>
+            <a href="{% url 'portal:dashboard' %}" style="display:inline-block;margin-top:16px;color:#8c1515;font-weight:600;font-family:Inter,sans-serif;font-size:.9rem;">Go to Dashboard →</a>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-body" style="padding-top:32px;">
+            <div class="page-list-icon" style="margin-bottom:16px;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+            </div>
+            <div class="page-card-tag">Wellness</div>
+            <h3 class="page-card-title">Health & Counseling</h3>
+            <p class="page-card-desc">Access mental health support, counseling services, medical care, and wellness programs available to all enrolled students.</p>
+            <a href="#" style="display:inline-block;margin-top:16px;color:#8c1515;font-weight:600;font-family:Inter,sans-serif;font-size:.9rem;">Book Appointment →</a>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-body" style="padding-top:32px;">
+            <div class="page-list-icon" style="margin-bottom:16px;">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z"/></svg>
+            </div>
+            <div class="page-card-tag">Housing</div>
+            <h3 class="page-card-title">Housing & Dining</h3>
+            <p class="page-card-desc">Manage your housing application, meal plan, and explore residential communities and dining options on campus.</p>
+            <a href="#" style="display:inline-block;margin-top:16px;color:#8c1515;font-weight:600;font-family:Inter,sans-serif;font-size:.9rem;">Manage Housing →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Student Life Guide</h2>
+      <p class="page-section-subtitle">Everything from orientation to graduation — find what you need at every stage of your journey.</p>
+      <div class="page-list-grid">
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zM12 14v7m0-7L3 9"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Orientation & Onboarding</h4>
+            <p>Get started right with orientation schedules, campus maps, key contacts, and your first-week checklist.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Financial Aid</h4>
+            <p>Review your financial aid package, apply for scholarships, and manage your student account online.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Career Services</h4>
+            <p>Resume reviews, mock interviews, career fairs, and internship placement services for all Metropolitan students.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Student Organizations</h4>
+            <p>Browse 200+ clubs, apply for leadership roles, and build skills and community outside the classroom.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Your Dashboard Awaits</h2>
+      <p class="page-cta-desc">Log in to your student account to access grades, course results, and personalized information.</p>
+      <div class="page-cta-btns">
+        <a href="{% url 'portal:login' %}" class="btn-primary-page">Student Login</a>
+        <a href="{% url 'portal:campus_life' %}" class="btn-outline-page">Campus Life</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'portal/teachers/base_dashboard.html' %}
+
+{% block title %}Batch {{ batch_number }} / Section {{ section }} Students — Metropolitan{% endblock %}
+
+{% block active_add_batch %}active{% endblock %}
+
+{% block header_title %}Batch {{ batch_number }} — Section {{ section }}{% endblock %}
+{% block header_subtitle %}All students enrolled in Batch {{ batch_number }}, Section {{ section }}.{% endblock %}
+
+{% block content %}
+<div class="page" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h2 style="margin: 0; color: #333;">Students List</h2>
+    <a href="{% url 'portal:teachers.addBatch' %}" style="text-decoration: none; color: #0d47a1; font-weight: 500;">
+      &larr; Back to Batches
+    </a>
+  </div>
+  
+  {% if students %}
+    <div style="overflow-x: auto;">
+      <table style="width: 100%; border-collapse: collapse;">
+        <thead>
+          <tr style="background-color: #f9f9f9; border-bottom: 2px solid #e0e0e0;">
+            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Student ID</th>
+            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Name</th>
+            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Email</th>
+            <th style="padding: 12px; text-align: left; font-weight: 600; color: #333;">Section</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for student in students %}
+            <tr style="border-bottom: 1px solid #f0f0f0;">
+              <td style="padding: 12px; color: #555;">{{ student.student_id }}</td>
+              <td style="padding: 12px; color: #555;">{{ student.student_name }}</td>
+              <td style="padding: 12px; color: #555;">{{ student.email }}</td>
+              <td style="padding: 12px; color: #555;">{{ student.section }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p style="color: #666; padding: 20px 0;">No students found in this batch.</p>
+  {% endif %}
+</div>
+{% endblock %}

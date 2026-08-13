@@ -1,0 +1,670 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Metropolitan University — Shaping Tomorrow's Leaders Today</title>
+  <meta name="description" content="Metropolitan University is a world-class institution dedicated to discovery, learning, and excellence. Explore academics, research, campus life, athletics, and more." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2" />       
+</head>
+<body>
+  <!-- ============================================================
+       GLOBAL LOADER
+  ============================================================ -->
+  <div id="global-loader">
+    <img src="{% static 'images/metropolitan-logo.png' %}" alt="Loading..." class="loader-logo" />
+  </div>
+
+  <!-- ============================================================
+       NAVIGATION
+  ============================================================ -->
+  <nav id="main-nav">
+    <!-- Top info bar -->
+    <div id="nav-top-bar">
+      <div class="nav-top-inner">
+        <div class="nav-info-links">
+          <span class="nav-info-label">Information for:</span>
+          <a href="{% url 'portal:students' %}">Students</a>
+          <a href="{% url 'portal:teachers.login' %}">Faculty</a>
+          <a href="{% url 'portal:staff' %}">Staff</a>
+          <a href="{% url 'portal:visitors' %}">Visitors</a>
+          <a href="{% url 'portal:alumni' %}">Alumni</a>
+        </div>
+        <button class="nav-search-btn" id="search-btn" aria-label="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+          <span>Search</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Main bar -->
+    <div class="nav-main-inner">
+      <a href="#" class="nav-logo">
+        <img src="{% static 'images/metropolitan-logo.png' %}" alt="Metropolitan University" />
+      </a>
+
+      <div class="nav-links">
+        <a href="{% url 'portal:academics' %}"   class="nav-link">Academics</a>
+        <a href="{% url 'portal:research' %}"    class="nav-link">Research</a>
+        <a href="{% url 'portal:campus_life' %}" class="nav-link">Campus Life</a>
+        <a href="{% url 'portal:athletics' %}"   class="nav-link">Athletics</a>
+        <a href="{% url 'portal:admission' %}"   class="nav-link">Admission</a>
+        <a href="{% url 'portal:about' %}"       class="nav-link">About</a>
+        <a href="{% url 'portal:news' %}"        class="nav-link">News</a>
+        <a href="{% url 'portal:events' %}"      class="nav-link">Events</a>
+      </div>
+
+      <div class="nav-auth-btns">
+        {% if request.session.student_id %}
+          <div class="student-dropdown-container">
+            <button class="nav-student-name student-dropdown-toggle">
+              {{ request.session.student_name }}
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+            </button>
+            <div class="student-dropdown-menu">
+              <a href="{% url 'portal:dashboard' %}">
+                <svg style="width: 16px; height: 16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/></svg>
+                Dashboard
+              </a>
+              <a href="{% url 'portal:logout' %}">
+                <svg style="width: 16px; height: 16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                Log Out
+              </a>
+            </div>
+          </div>
+        {% else %}
+          <a href="{% url 'portal:login' %}" class="btn-outline-nav">Log In</a>
+          <a href="{% url 'portal:signup' %}" class="btn-red-nav">Sign Up</a>
+        {% endif %}
+      </div>
+
+      <button class="nav-mobile-btn" id="mobile-menu-btn" aria-label="Toggle menu" aria-expanded="false">
+        <svg id="icon-menu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg id="icon-x" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" style="display:none">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile dropdown -->
+    <div id="mobile-menu">
+      <div class="mobile-menu-inner">
+        <a href="{% url 'portal:academics' %}"   class="mobile-nav-link">Academics</a>
+        <a href="{% url 'portal:research' %}"    class="mobile-nav-link">Research</a>
+        <a href="{% url 'portal:campus_life' %}" class="mobile-nav-link">Campus Life</a>
+        <a href="{% url 'portal:athletics' %}"   class="mobile-nav-link">Athletics</a>
+        <a href="{% url 'portal:admission' %}"   class="mobile-nav-link">Admission</a>
+        <a href="{% url 'portal:about' %}"       class="mobile-nav-link">About</a>
+        <a href="{% url 'portal:news' %}"        class="mobile-nav-link">News</a>
+        <a href="{% url 'portal:events' %}"      class="mobile-nav-link">Events</a>
+        <div class="mobile-auth">
+          {% if request.session.student_id %}
+            <span class="mobile-student-name">{{ request.session.student_name }}</span>
+            <a href="{% url 'portal:dashboard' %}" class="btn-outline-nav" style="margin-bottom: 10px;">Dashboard</a>
+            <a href="{% url 'portal:logout' %}" class="btn-outline-nav">Log Out</a>
+          {% else %}
+            <a href="{% url 'portal:login' %}" class="btn-outline-nav">Log In</a>
+            <a href="{% url 'portal:signup' %}" class="btn-red-nav">Sign Up</a>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Flash Messages -->
+  {% if messages %}
+    <div class="flash-messages" style="max-width: 1200px; margin: 20px auto; padding: 0 20px;">
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-error{% else %}alert-success{% endif %}" style="padding: 15px; margin-bottom: 15px; border-radius: 4px; background: {% if message.tags == 'error' %}#f8d7da{% else %}#d4edda{% endif %}; color: {% if message.tags == 'error' %}#721c24{% else %}#155724{% endif %}; border: 1px solid {% if message.tags == 'error' %}#f5c6cb{% else %}#c3e6cb{% endif %};">
+          {{ message }}
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  <!-- ============================================================
+       HERO
+  ============================================================ -->
+  <section id="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1 class="hero-title" id="hero-title"><!-- letters injected by JS --></h1>
+      <p class="hero-tagline" id="hero-tagline">Shaping Tomorrow's Leaders Today</p>
+    </div>
+    <a href="#mission" class="hero-cta">
+      <span>Explore Metropolitan</span>
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+      </svg>
+    </a>
+  </section>
+
+  <!-- ============================================================
+       MISSION
+  ============================================================ -->
+  <section id="mission" class="section-dark section-pad">
+    <div class="mission-inner">
+      <h2 class="section-title reveal">A Mission Defined by Excellence</h2>
+      <p class="mission-body reveal delay-1">
+        At Metropolitan University, our mission of discovery and learning is energized by a spirit of
+        optimism and possibility. Here you'll find a place of intellectual expansiveness, wide-ranging
+        perspectives, and freedom to explore new lines of thinking. Buzzing with ideas and innovation,
+        approaching questions with openness and curiosity, pursuing excellence in all we do — this is
+        Metropolitan.
+      </p>
+      <div class="cta-wrap reveal delay-2">
+        <a href="#" class="btn-accent">More about Metropolitan</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CAMPUS NEWS
+  ============================================================ -->
+  <section id="news" class="section-darker section-pad">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title reveal">Campus News</h2>
+        <p class="section-subtitle reveal delay-1">Stories about people, research, and innovation across our campus</p>
+      </div>
+      <div class="news-grid">
+        <article class="news-card reveal delay-1">
+          <div class="card-img"><img src="{% static 'images/research-students.jpg' %}" alt="Why research matters" loading="lazy" /></div>
+          <div class="card-body">
+            <span class="news-category">In the Spotlight</span>
+            <h3 class="news-headline">Why research matters</h3>
+          </div>
+        </article>
+        <article class="news-card reveal delay-2">
+          <div class="card-img"><img src="{% static 'images/cricket-team.jpg' %}" alt="Women's cricket" loading="lazy" /></div>
+          <div class="card-body">
+            <span class="news-category">Athletics</span>
+            <h3 class="news-headline">Women's cricket caps dominant season with championship title</h3>
+          </div>
+        </article>
+        <article class="news-card reveal delay-3">
+          <div class="card-img"><img src="{% static 'images/wellness-center.jpg' %}" alt="Wellness center" loading="lazy" /></div>
+          <div class="card-body">
+            <span class="news-category">Health &amp; Medicine</span>
+            <h3 class="news-headline">New wellness center opens doors to students and community</h3>
+          </div>
+        </article>
+        <article class="news-card reveal delay-2">
+          <div class="card-img"><img src="{% static 'images/sustainability-campus.jpg' %}" alt="Sustainability" loading="lazy" /></div>
+          <div class="card-body">
+            <span class="news-category">Earth &amp; Climate</span>
+            <h3 class="news-headline">Sustainability initiative reduces campus carbon footprint by 40%</h3>
+          </div>
+        </article>
+        <article class="news-card reveal delay-3">
+          <div class="card-img"><img src="{% static 'images/ai-lab.jpg' %}" alt="AI Lab" loading="lazy" /></div>
+          <div class="card-body">
+            <span class="news-category">Technology</span>
+            <h3 class="news-headline">AI lab partnership drives innovation in local industries</h3>
+          </div>
+        </article>
+        <article class="news-card reveal delay-4">
+          <div class="card-img"><img src="{% static 'images/community-outreach.jpg' %}" alt="Community outreach" loading="lazy" /></div>
+          <div class="card-body">
+            <span class="news-category">Community</span>
+            <h3 class="news-headline">Students launch outreach program serving 5,000 local families</h3>
+          </div>
+        </article>
+      </div>
+      <div class="cta-center reveal delay-5">
+        <a href="#" class="btn-accent">More campus news</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ACADEMICS
+  ============================================================ -->
+  <section id="academics" class="section-dark section-pad">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title reveal">Academics</h2>
+        <p class="section-subtitle reveal delay-1">
+          Preparing students to make meaningful contributions to society as engaged citizens and leaders in a complex world
+        </p>
+      </div>
+      <div class="cards-grid">
+        <article class="card reveal delay-1">
+          <div class="card-img"><img src="{% static 'images/undergrad-students.jpg' %}" alt="Undergraduate Education" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Undergraduate Education</h3>
+            <p class="card-desc">Rich learning experiences that provide a broad liberal arts foundation and deep subject-area expertise</p>
+            <a href="#" class="card-link">Undergraduate Education <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+        <article class="card reveal delay-2">
+          <div class="card-img"><img src="{% static 'images/grad-students.jpg' %}" alt="Graduate Education" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Graduate Education</h3>
+            <p class="card-desc">Unsurpassed opportunities to participate in the advancement of entire fields of knowledge</p>
+            <a href="#" class="card-link">Graduate Education <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+        <article class="card reveal delay-3">
+          <div class="card-img"><img src="{% static 'images/lifelong-learners.jpg' %}" alt="Lifelong Learning" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Lifelong Learning</h3>
+            <p class="card-desc">Continuing adult education, executive and professional programs, and programs for K-12 students</p>
+            <a href="#" class="card-link">Lifelong Learning <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+      </div>
+
+      <h3 class="schools-heading reveal delay-4">Eight schools in which to pursue your passions</h3>
+      <div class="schools-list reveal delay-4">
+        <span class="school-item"><a href="#">Engineering</a><span class="school-sep">|</span></span>
+        <span class="school-item"><a href="#">Business</a><span class="school-sep">|</span></span>
+        <span class="school-item"><a href="#">Humanities &amp; Sciences</a><span class="school-sep">|</span></span>
+        <span class="school-item"><a href="#">Medicine</a><span class="school-sep">|</span></span>
+        <span class="school-item"><a href="#">Law</a><span class="school-sep">|</span></span>
+        <span class="school-item"><a href="#">Education</a><span class="school-sep">|</span></span>
+        <span class="school-item"><a href="#">Architecture</a><span class="school-sep">|</span></span>
+        <span class="school-item"><a href="#">Social Sciences</a></span>
+      </div>
+      <div class="cta-center reveal delay-5">
+        <a href="#" class="btn-accent">More about academics</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       QUOTE 1
+  ============================================================ -->
+  <section class="quote-section">
+    <div class="quote-bg" style="background-image:url('{% static 'images/quote-background.jpg' %}')"></div>
+    <div class="quote-overlay"></div>
+    <div class="quote-content">
+      <div class="quote-portrait reveal">
+        <img src="{% static 'images/faculty-portrait.jpg' %}" alt="Dr. Sarah Chen" loading="lazy" />
+      </div>
+      <blockquote class="quote-text reveal delay-1">
+        &ldquo;The truly impactful technologies are always based on the condition that you can freely explore.&rdquo;
+      </blockquote>
+      <div class="quote-attribution reveal delay-2">
+        <p class="quote-name">Dr. Sarah Chen</p>
+        <p class="quote-role">Professor of Computer Science</p>
+      </div>
+      <a href="#" class="quote-read-more reveal delay-3">
+        Read more
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       RESEARCH
+  ============================================================ -->
+  <section id="research" class="section-darker section-pad">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title reveal">Research</h2>
+        <p class="section-subtitle reveal delay-1">Driving discoveries vital to our world, our health, and our intellectual life</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item reveal delay-1">
+          <div class="stat-number"><span class="counter" data-target="6699">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Research projects funded annually</p>
+        </div>
+        <div class="stat-item reveal delay-2">
+          <div class="stat-number"><span class="counter" data-target="3029">0</span></div>
+          <p class="stat-label">Publications in top-tier journals</p>
+        </div>
+        <div class="stat-item reveal delay-3">
+          <div class="stat-number"><span class="counter" data-target="400">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Industry partnerships worldwide</p>
+        </div>
+        <div class="stat-item reveal delay-2">
+          <div class="stat-number"><span class="counter" data-target="350000">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Lives impacted by our health research</p>
+        </div>
+        <div class="stat-item reveal delay-3">
+          <div class="stat-number"><span class="counter" data-target="94">0</span><span class="stat-suffix">M</span></div>
+          <p class="stat-label">Annual research funding</p>
+        </div>
+        <div class="stat-item reveal delay-4">
+          <div class="stat-number"><span class="counter" data-target="11">0</span><span class="stat-suffix">+</span></div>
+          <p class="stat-label">Research centers of excellence</p>
+        </div>
+      </div>
+      <div class="divider"></div>
+      <div class="cta-center reveal delay-5">
+        <a href="#" class="btn-accent">More about research</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CAMPUS LIFE
+  ============================================================ -->
+  <section id="campus-life" class="section-dark section-pad">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title reveal">Campus Life</h2>
+        <p class="section-subtitle reveal delay-1">Building a vibrant community of creative and accomplished people from around the world</p>
+      </div>
+      <div class="cards-grid">
+        <article class="card reveal delay-1">
+          <div class="card-img"><img src="{% static 'images/student-life.jpg' %}" alt="Student Life" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Student Life</h3>
+            <p class="card-desc">A residential campus with diverse housing, exceptional dining, and over 200 student organizations</p>
+            <a href="#" class="card-link">Student Affairs <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+        <article class="card reveal delay-2">
+          <div class="card-img"><img src="{% static 'images/dialogue-event.jpg' %}" alt="Constructive Dialogue" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Constructive Dialogue</h3>
+            <p class="card-desc">Uplifting academic freedom and free speech; curiosity and critical inquiry; open, inclusive exchange of ideas</p>
+            <a href="#" class="card-link">ePluribus <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+        <article class="card reveal delay-3">
+          <div class="card-img"><img src="{% static 'images/recreation-wellness.jpg' %}" alt="Recreation & Wellness" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Recreation &amp; Wellness</h3>
+            <p class="card-desc">State-of-the-art facilities and fitness programs to encourage movement and play</p>
+            <a href="#" class="card-link">Recreation &amp; Wellness <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+      </div>
+      <div class="cta-center reveal delay-5">
+        <a href="#" class="btn-accent">More about campus life</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       QUOTE 2
+  ============================================================ -->
+  <section class="quote-section">
+    <div class="quote-bg" style="background-image:url('{% static 'images/student-quote-bg.jpg' %}')"></div>
+    <div class="quote-overlay"></div>
+    <div class="quote-content">
+      <div class="quote-portrait reveal">
+        <img src="{% static 'images/student-portrait.jpg' %}" alt="Khoi Young" loading="lazy" />
+      </div>
+      <blockquote class="quote-text reveal delay-1">
+        &ldquo;There's a lot to question — that's one of the most important things I'll take with me from my Metropolitan experience.&rdquo;
+      </blockquote>
+      <div class="quote-attribution reveal delay-2">
+        <p class="quote-name">Khoi Young, '25</p>
+        <p class="quote-role">Design major and three-time national gymnastics champion</p>
+      </div>
+      <a href="#" class="quote-read-more reveal delay-3">
+        Read more
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg>
+      </a>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ATHLETICS
+  ============================================================ -->
+  <section id="athletics" class="section-darker section-pad">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title reveal">Athletics</h2>
+        <p class="section-subtitle reveal delay-1">
+          Providing student-athletes the opportunity to achieve excellence both in competition and in the classroom
+        </p>
+      </div>
+      <div class="cards-grid">
+        <article class="card reveal delay-1">
+          <div class="card-img"><img src="{% static 'images/cricket-team.jpg' %}" alt="Home of Champions" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Home of Champions</h3>
+            <p class="card-desc">Metropolitan's 45 national championships are the most for any university, a product of an unrivaled culture of excellence and continued support from the campus community</p>
+            <a href="#" class="card-link">National Championships <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+        <article class="card reveal delay-2">
+          <div class="card-img"><img src="{% static 'images/student-quote-bg.jpg' %}" alt="Olympic Excellence" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Olympic Excellence</h3>
+            <p class="card-desc">The Cardinals have produced at least one medalist in every Olympics in which the U.S. has competed since 1912, totaling 335 medals from 196 medalists</p>
+            <a href="#" class="card-link">Medals <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+        <article class="card reveal delay-3">
+          <div class="card-img"><img src="{% static 'images/recreation-wellness.jpg' %}" alt="Multidimensional Impact" loading="lazy" /></div>
+          <div class="card-body">
+            <h3 class="card-title">Multidimensional Impact</h3>
+            <p class="card-desc">Metropolitan student-athletes have achieved local, national, and global impact through community involvement and advocacy</p>
+            <a href="#" class="card-link">Athlete Stories <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 18l6-6-6-6"/></svg></a>
+          </div>
+        </article>
+      </div>
+      <div class="cta-center reveal delay-5">
+        <a href="#" class="btn-accent">More about athletics</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       EVENTS
+  ============================================================ -->
+  <section id="events" class="section-darker section-pad">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2 class="section-title reveal">Upcoming Events</h2>
+      </div>
+      <div class="events-grid">
+        <article class="event-card reveal delay-1">
+          <div class="event-img">
+            <img src="{% static 'images/event-performance.jpg' %}" alt="Voice Studio Showcase" loading="lazy" />
+            <div class="event-date-badge"><div class="event-date-month">MAY</div><div class="event-date-day">31</div></div>
+          </div>
+          <div class="event-body">
+            <span class="event-category">Performance</span>
+            <h3 class="event-title">The Voice Studio Showcase — Sing On!</h3>
+            <p class="event-time">02:30 PM</p>
+          </div>
+        </article>
+        <article class="event-card reveal delay-2">
+          <div class="event-img">
+            <img src="{% static 'images/event-exhibition.jpg' %}" alt="Monthly Art Exhibit" loading="lazy" />
+            <div class="event-date-badge"><div class="event-date-month">JUN</div><div class="event-date-day">01</div></div>
+          </div>
+          <div class="event-body">
+            <span class="event-category">Exhibition</span>
+            <h3 class="event-title">Monthly Art Exhibit — The Natural World</h3>
+            <p class="event-time">10:00 AM</p>
+          </div>
+        </article>
+        <article class="event-card reveal delay-3">
+          <div class="event-img">
+            <img src="{% static 'images/event-lecture.jpg' %}" alt="Democracy at a Crossroads" loading="lazy" />
+            <div class="event-date-badge"><div class="event-date-month">JUN</div><div class="event-date-day">01</div></div>
+          </div>
+          <div class="event-body">
+            <span class="event-category">Lecture</span>
+            <h3 class="event-title">Democracy at a Crossroads: Ballots, Bullets, and the Future</h3>
+            <p class="event-time">03:00 PM</p>
+          </div>
+        </article>
+        <article class="event-card reveal delay-4">
+          <div class="event-img">
+            <img src="{% static 'images/event-seminar.jpg' %}" alt="Energy Seminar" loading="lazy" />
+            <div class="event-date-badge"><div class="event-date-month">JUN</div><div class="event-date-day">01</div></div>
+          </div>
+          <div class="event-body">
+            <span class="event-category">Seminar</span>
+            <h3 class="event-title">Energy Seminar: Powering the AI Revolution Sustainably</h3>
+            <p class="event-time">04:30 PM</p>
+          </div>
+        </article>
+      </div>
+      <div class="cta-center reveal delay-5">
+        <a href="#" class="btn-accent">More events</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       ADMISSION
+  ============================================================ -->
+  <section id="admission" class="section-dark section-pad">
+    <div class="section-inner">
+      <div class="section-header" style="margin-bottom:48px">
+        <h2 class="section-title reveal">Admission</h2>
+        <p class="section-subtitle reveal delay-1">Offering extraordinary freedom to explore, to collaborate, and to challenge yourself</p>
+      </div>
+      <div class="admission-img reveal delay-2">
+        <img src="{% static 'images/admission-students.jpg' %}" alt="Students on campus" loading="lazy" />
+      </div>
+      <div class="admission-cols reveal delay-3">
+        <div>
+          <h3 class="admission-col-title">Explore the possibilities of a Metropolitan education</h3>
+          <p class="admission-col-desc">We look for distinctive students who exhibit an abundance of energy and curiosity in their classes, activities, projects, research, and lives.</p>
+        </div>
+        <div>
+          <h3 class="admission-col-title">Metropolitan meets the full financial need of every admitted undergrad who qualifies for assistance</h3>
+          <p class="admission-col-desc">More than two-thirds of undergrads receive some form of financial assistance. Generally, tuition is covered for families with incomes below $150,000.</p>
+        </div>
+      </div>
+      <div class="cta-center reveal delay-4">
+        <a href="#" class="btn-accent">More about admission</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer id="footer">
+    <div class="footer-landscape">
+      <img src="{% static 'images/campus-hills.jpg' %}" alt="Campus landscape" loading="lazy" />
+      <div class="footer-landscape-fade"></div>
+    </div>
+
+    <div class="footer-inner">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <h4 class="footer-col-title">Schools</h4>
+          <ul>
+            <li><a href="#">Engineering</a></li>
+            <li><a href="#">Business</a></li>
+            <li><a href="#">Humanities &amp; Sciences</a></li>
+            <li><a href="#">Law</a></li>
+            <li><a href="#">Medicine</a></li>
+            <li><a href="#">Education</a></li>
+            <li><a href="#">Architecture</a></li>
+            <li><a href="#">Social Sciences</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Academics</h4>
+          <ul>
+            <li><a href="#">Undergraduate Majors</a></li>
+            <li><a href="#">Graduate Programs</a></li>
+            <li><a href="#">Online Learning</a></li>
+            <li><a href="#">Research Centers</a></li>
+            <li><a href="#">Libraries</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Campus Life</h4>
+          <ul>
+            <li><a href="#">Student Affairs</a></li>
+            <li><a href="#">Housing &amp; Dining</a></li>
+            <li><a href="#">Recreation</a></li>
+            <li><a href="#">Health &amp; Wellness</a></li>
+            <li><a href="#">Career Services</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">About</h4>
+          <ul>
+            <li><a href="#">Facts</a></li>
+            <li><a href="#">History</a></li>
+            <li><a href="#">Accreditation</a></li>
+            <li><a href="#">Leadership</a></li>
+            <li><a href="#">Directory</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4 class="footer-col-title">Resources</h4>
+          <ul>
+            <li><a href="#">Campus Map</a></li>
+            <li><a href="#">Community Engagement</a></li>
+            <li><a href="#">Giving</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Faculty Positions</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col footer-action-col">
+          <div class="footer-action-btns">
+            <a href="#" class="footer-action-btn">Apply Now</a>
+            <a href="#" class="footer-action-btn">Visit Campus</a>
+            <a href="#" class="footer-action-btn">Give</a>
+            <a href="#" class="footer-action-btn">Contact Us</a>
+          </div>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+            </a>
+            <a href="#" aria-label="Twitter">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/></svg>
+            </a>
+            <a href="#" aria-label="Instagram">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            </a>
+            <a href="#" aria-label="LinkedIn">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            </a>
+            <a href="#" aria-label="YouTube">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-1.96C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58A2.78 2.78 0 0 0 3.4 19.54C5.12 20 12 20 12 20s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-1.96A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"/></svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <div class="footer-bottom-logo">
+          <img src="{% static 'images/metropolitan-logo.png' %}" alt="Metropolitan University" />
+        </div>
+        <div class="footer-legal">
+          <a href="#">Terms of Use</a>
+          <a href="#">Privacy</a>
+          <a href="#">Copyright</a>
+          <a href="#">Trademarks</a>
+          <a href="#">Non-Discrimination</a>
+          <a href="#">Accessibility</a>
+        </div>
+        <p class="footer-copyright">&copy; 2025 Metropolitan University. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="{% static 'js/main.js' %}"></script>
+  <script>
+    window.addEventListener('load', function() {
+      const loader = document.getElementById('global-loader');
+      if (loader) {
+        loader.classList.add('hidden');
+        setTimeout(() => {
+          loader.style.display = 'none';
+        }, 600);
+      }
+    });
+  </script>
+</body>
+</html>

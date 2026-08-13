@@ -1,0 +1,71 @@
+{% extends 'portal/teachers/base_dashboard.html' %}
+
+{% block title %}Add Batch — Metropolitan{% endblock %}
+
+{% block active_add_batch %}active{% endblock %}
+
+{% block header_title %}Add Batch{% endblock %}
+{% block header_subtitle %}Manage your assigned batches and view their students.{% endblock %}
+
+{% block content %}
+<div class="page" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px;">
+  <h2 style="margin-top: 0; color: #333; margin-bottom: 20px;">Add a New Batch</h2>
+  <form method="POST" action="{% url 'portal:teachers.addBatch' %}">
+    {% csrf_token %}
+    <div style="display: flex; gap: 15px; align-items: flex-end; flex-wrap: wrap;">
+      <div>
+        <label for="batch" style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Batch</label>
+        <select name="batch" id="batch" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; height: 42px; min-width: 160px;">
+          <option value="" disabled selected>Select batch...</option>
+          {% for batch in all_batches %}
+            <option value="{{ batch }}">{{ batch }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="section" style="display: block; margin-bottom: 8px; font-weight: 500; color: #444;">Section</label>
+        <select name="section" id="section" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; height: 42px; min-width: 140px;">
+          <option value="" disabled selected>Select section...</option>
+          {% for section in all_sections %}
+            <option value="{{ section }}">{{ section }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <button type="submit" style="background-color: #0d47a1; color: white; border: none; padding: 0 24px; font-size: 16px; border-radius: 4px; cursor: pointer; transition: background-color 0.2s; height: 42px;">
+        Add Batch
+      </button>
+    </div>
+  </form>
+</div>
+
+<h2 style="color: #333; margin-bottom: 20px; font-weight: 600;">My Batches</h2>
+
+<div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 20px; margin-bottom: 40px;">
+  {% for record in added_batches_records %}
+    <div style="background: white; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.06); padding: 28px 20px 20px; display: flex; flex-direction: column; align-items: center; text-align: center; border-top: 4px solid #0d47a1; position: relative;">
+      
+      <!-- Delete button -->
+      <form method="POST" action="{% url 'portal:teachers.deleteBatch' record.pk %}" onsubmit="return confirm('Are you sure you want to remove Batch {{ record.batch }} - Section {{ record.section }}?');" style="position: absolute; top: 12px; right: 12px;">
+        {% csrf_token %}
+        <button type="submit" title="Remove batch" style="background: none; border: none; cursor: pointer; color: #aaa; font-size: 18px; line-height: 1; padding: 4px 6px; border-radius: 4px; transition: color 0.2s, background 0.2s;">
+          &#10005;
+        </button>
+      </form>
+
+      <div style="width: 70px; height: 70px; border-radius: 50%; background-color: #e3f2fd; color: #0d47a1; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: bold; margin-bottom: 14px;">
+        {{ record.batch|slice:":2" }}
+      </div>
+      <h3 style="margin: 0 0 4px 0; color: #222; font-size: 20px;">Batch {{ record.batch }}</h3>
+      <span style="display: inline-block; background-color: #e8eaf6; color: #3949ab; font-size: 13px; font-weight: 600; padding: 3px 12px; border-radius: 20px; margin-bottom: 14px;">Section {{ record.section }}</span>
+      <p style="color: #777; margin: 0 0 22px 0; font-size: 13px; line-height: 1.5;">View the list of students enrolled in this batch and section.</p>
+      <a href="{% url 'portal:teachers.viewBatchStudents' record.batch record.section %}" style="display: block; background-color: #d32f2f; color: white; text-decoration: none; padding: 11px 24px; border-radius: 6px; font-weight: 500; font-size: 15px; transition: background-color 0.2s; width: 100%; box-sizing: border-box;">
+        View Students
+      </a>
+    </div>
+  {% empty %}
+    <div style="grid-column: 1 / -1; background: white; border-radius: 8px; padding: 40px; text-align: center; color: #666; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+      <p style="font-size: 16px; margin: 0;">You haven't added any batches yet. Select a batch and section from above to get started.</p>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

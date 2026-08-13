@@ -1,0 +1,189 @@
+{% extends 'portal/teachers/base_dashboard.html' %}
+
+{% block title %}Update Result — Metropolitan{% endblock %}
+
+{% block active_results %}active{% endblock %}
+
+{% block header_title %}Update Result{% endblock %}
+{% block header_subtitle %}{{ result_sheet.course_title }} (Batch {{ result_sheet.teacher_batch.batch }}){% endblock %}
+
+{% block content %}
+<style>
+  .table-container {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    overflow-x: auto;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+  }
+  
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    color: #333;
+  }
+  
+  th {
+    background-color: #f8fafc;
+    color: #333;
+    font-weight: 600;
+  }
+  
+  input[type="number"] {
+    width: 70px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  input[type="number"]:disabled {
+    background-color: #f1f1f1;
+    color: #888;
+  }
+  
+  .btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background: #004b87;
+    color: white;
+  }
+  
+  .btn-primary:disabled {
+    background: #a0aec0;
+    cursor: not-allowed;
+  }
+  
+  .btn-secondary {
+    background: #cc0000;
+    color: white;
+    margin-left: 10px;
+  }
+  
+  .summary-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    background: #eef2ff;
+    padding: 15px;
+    border-radius: 8px;
+    color: #333;
+  }
+</style>
+
+<div class="summary-info">
+  <div>
+    <strong>Course:</strong> {{ result_sheet.course_title }} ({{ result_sheet.course_credit }} Credits)<br>
+    <strong>Semester:</strong> {{ result_sheet.semester }}
+  </div>
+  <div style="text-align: right;">
+    <strong>Batch:</strong> {{ result_sheet.teacher_batch.batch }} (Sec {{ result_sheet.teacher_batch.section }})<br>
+    <strong>Deadline:</strong> {{ result_sheet.end_date }}
+    {% if not is_editable %}
+      <br><span style="color: red; font-weight: bold;">(Deadline Passed - Read Only)</span>
+    {% endif %}
+  </div>
+</div>
+
+<div class="table-container">
+  <form method="POST" action="{% url 'portal:teachers.updateResult' result_sheet.id %}">
+    {% csrf_token %}
+    <table>
+      <thead>
+        <tr>
+          <th>Student Name</th>
+          <th>Student ID</th>
+          <th>Attendance (10)</th>
+          <th>CT 1 (10)</th>
+          <th>CT 2 (10)</th>
+          <th>Assignment (10)</th>
+          <th>Mid Term (20)</th>
+          <th>Final Term (40)</th>
+          <th>Total (100)</th>
+          <th>CGPA</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for sr in student_results %}
+        <tr>
+          <td>{{ sr.student.student_name }}</td>
+          <td>{{ sr.student.student_id }}</td>
+          <td><input type="number" step="0.01" max="10" name="attendance_{{ sr.id }}" class="mark-input" data-id="{{ sr.id }}" value="{{ sr.attendance|default_if_none:'' }}" {% if not is_editable %}disabled{% endif %}></td>
+          <td><input type="number" step="0.01" max="10" name="ct1_{{ sr.id }}" class="mark-input" data-id="{{ sr.id }}" value="{{ sr.ct1|default_if_none:'' }}" {% if not is_editable %}disabled{% endif %}></td>
+          <td><input type="number" step="0.01" max="10" name="ct2_{{ sr.id }}" class="mark-input" data-id="{{ sr.id }}" value="{{ sr.ct2|default_if_none:'' }}" {% if not is_editable %}disabled{% endif %}></td>
+          <td><input type="number" step="0.01" max="10" name="assignment_{{ sr.id }}" class="mark-input" data-id="{{ sr.id }}" value="{{ sr.assignment|default_if_none:'' }}" {% if not is_editable %}disabled{% endif %}></td>
+          <td><input type="number" step="0.01" max="20" name="mid_term_{{ sr.id }}" class="mark-input" data-id="{{ sr.id }}" value="{{ sr.mid_term|default_if_none:'' }}" {% if not is_editable %}disabled{% endif %}></td>
+          <td><input type="number" step="0.01" max="40" name="final_term_{{ sr.id }}" class="mark-input" data-id="{{ sr.id }}" value="{{ sr.final_term|default_if_none:'' }}" {% if not is_editable %}disabled{% endif %}></td>
+          <td><strong id="total_{{ sr.id }}">{{ sr.total|default_if_none:'0.00' }}</strong></td>
+          <td><strong id="cgpa_{{ sr.id }}">{{ sr.cgpa|default_if_none:'0.00' }}</strong></td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="10" style="text-align: center; padding: 20px; color: #666;">
+            There are no students registered in this batch and section (Batch {{ result_sheet.teacher_batch.batch }}, Section {{ result_sheet.teacher_batch.section }}).
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    
+    <div style="margin-top: 20px;">
+      <button type="submit" class="btn btn-primary" {% if not is_editable %}disabled{% endif %}>Save Results</button>
+      <a href="{% url 'portal:teachers.exportResultPdf' result_sheet.id %}" class="btn btn-secondary" target="_blank">Export as PDF</a>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const markInputs = document.querySelectorAll('.mark-input');
+    
+    function calculateResults(studentId) {
+      const attendance = parseFloat(document.querySelector(`input[name="attendance_${studentId}"]`).value) || 0;
+      const ct1 = parseFloat(document.querySelector(`input[name="ct1_${studentId}"]`).value) || 0;
+      const ct2 = parseFloat(document.querySelector(`input[name="ct2_${studentId}"]`).value) || 0;
+      const assignment = parseFloat(document.querySelector(`input[name="assignment_${studentId}"]`).value) || 0;
+      const midTerm = parseFloat(document.querySelector(`input[name="mid_term_${studentId}"]`).value) || 0;
+      const finalTerm = parseFloat(document.querySelector(`input[name="final_term_${studentId}"]`).value) || 0;
+      
+      const total = attendance + ct1 + ct2 + assignment + midTerm + finalTerm;
+      document.getElementById(`total_${studentId}`).innerText = total.toFixed(2);
+      
+      let cgpa = 0.00;
+      if (total >= 80) cgpa = 4.00;
+      else if (total >= 75) cgpa = 3.75;
+      else if (total >= 70) cgpa = 3.50;
+      else if (total >= 65) cgpa = 3.25;
+      else if (total >= 60) cgpa = 3.00;
+      else if (total >= 55) cgpa = 2.75;
+      else if (total >= 50) cgpa = 2.50;
+      else if (total >= 45) cgpa = 2.25;
+      else if (total >= 40) cgpa = 2.00;
+      else cgpa = 0.00;
+      
+      document.getElementById(`cgpa_${studentId}`).innerText = cgpa.toFixed(2);
+    }
+    
+    markInputs.forEach(input => {
+      input.addEventListener('input', function() {
+        const studentId = this.getAttribute('data-id');
+        calculateResults(studentId);
+      });
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,492 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Student Dashboard — Metropolitan University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=2" />
+  <style>
+    /* Custom aesthetic dashboard styles */
+    :root {
+      --dash-bg: #f8fafc;
+      --dash-primary: #004b87;
+      --dash-accent: #c41230;
+      --glass-bg: rgba(255, 255, 255, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.5);
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 10px 25px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -2px rgba(0, 0, 0, 0.04);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+
+    body {
+      background: linear-gradient(135deg, #e0eafc 0%, #cfdef3 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-nav {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .dashboard-logo img {
+      height: 35px;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 40px auto;
+      padding: 0 20px;
+      flex: 1;
+      width: 100%;
+    }
+
+    .welcome-header {
+      margin-bottom: 40px;
+      animation: slideDown 0.6s ease-out;
+    }
+
+    .welcome-header h1 {
+      font-family: var(--font-serif);
+      font-size: 36px;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .welcome-header p {
+      color: #64748b;
+      font-size: 16px;
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 25px;
+      margin-bottom: 40px;
+    }
+
+    .metric-card {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+      animation: fadeIn 0.8s ease-out forwards;
+      opacity: 0;
+    }
+
+    .metric-card:nth-child(1) {
+      animation-delay: 0.1s;
+    }
+
+    .metric-card:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .metric-card:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    .metric-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--dash-primary), var(--dash-accent));
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    .metric-card:hover::before {
+      opacity: 1;
+    }
+
+    .metric-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      background: rgba(0, 75, 135, 0.1);
+      color: var(--dash-primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .metric-icon svg {
+      width: 24px;
+      height: 24px;
+    }
+
+    .metric-value {
+      font-size: 32px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 4px;
+      font-family: var(--font-sans);
+    }
+
+    .metric-label {
+      color: #64748b;
+      font-size: 14px;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .courses-section {
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--shadow-md);
+      animation: fadeIn 0.8s ease-out 0.4s forwards;
+      opacity: 0;
+    }
+
+    .courses-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 25px;
+    }
+
+    .courses-header h2 {
+      font-size: 24px;
+      font-family: var(--font-serif);
+      color: #1e293b;
+    }
+
+    .courses-list {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .course-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.5);
+      border-radius: 12px;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .course-item:hover {
+      background: rgba(255, 255, 255, 0.9);
+      border-color: rgba(0, 75, 135, 0.2);
+      transform: translateX(5px);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .course-info h3 {
+      font-size: 16px;
+      color: #0f172a;
+      margin-bottom: 4px;
+    }
+
+    .course-info p {
+      font-size: 14px;
+      color: #64748b;
+    }
+
+    .course-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .course-status .dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #0ea5e9;
+      animation: pulse 2s infinite;
+    }
+
+    .progress-bar-container {
+      margin-top: 15px;
+      height: 6px;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, var(--dash-primary), var(--dash-accent));
+      border-radius: 10px;
+      transition: width 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    /* Animations */
+    @keyframes slideDown {
+      from {
+        transform: translateY(-20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(14, 165, 233, 0.4);
+      }
+
+      70% {
+        box-shadow: 0 0 0 6px rgba(14, 165, 233, 0);
+      }
+
+      100% {
+        box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+      }
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: #64748b;
+    }
+
+    .empty-state svg {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 15px;
+      opacity: 0.5;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="dashboard-nav">
+    <a href="{% url 'portal:welcome' %}" class="dashboard-logo">
+      <img src="{% static 'images/metropolitan-logo.png' %}" alt="Metropolitan University" />
+    </a>
+
+    <div class="student-dropdown-container">
+      <button class="nav-student-name student-dropdown-toggle">
+        {{ student.student_name }}
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
+      <div class="student-dropdown-menu">
+        <a href="{% url 'portal:welcome' %}">
+          <svg style="width: 16px; height: 16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Home Page
+        </a>
+        <a href="{% url 'portal:logout' %}">
+          <svg style="width: 16px; height: 16px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Log Out
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="dashboard-container">
+
+    <div class="welcome-header">
+      <h1>Welcome back, {{ student.student_name }}!</h1>
+      <p>Here's an overview of your academic progress for the {{ student.batch }} session.</p>
+    </div>
+
+    <!-- Metrics Grid -->
+    <div class="metrics-grid">
+      <!-- Semester Card -->
+      <div class="metric-card">
+        <div class="metric-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+          </svg>
+        </div>
+        <div class="metric-value">{{ current_semester }}<span style="font-size:18px;color:#64748b">{% if current_semester == 1 %}st{% elif current_semester == 2 %}nd{% elif current_semester == 3 %}rd{% else %}th{% endif %}</span></div>
+        <div class="metric-label">Current Semester</div>
+      </div>
+
+      <!-- CGPA Card -->
+      <div class="metric-card">
+        <div class="metric-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+        </div>
+        <div class="metric-value">{{ cumulative_cgpa }}</div>
+        <div class="metric-label">Cumulative CGPA</div>
+      </div>
+
+      <!-- Credits Card -->
+      <div class="metric-card">
+        <div class="metric-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+            stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+          </svg>
+        </div>
+        <div class="metric-value">{{ completed_credits }}</div>
+        <div class="metric-label">Credits Completed</div>
+        <!-- Assuming 130 credits for graduation -->
+        <div class="progress-bar-container">
+          <div class="progress-bar" style="width: calc(({{ completed_credits }} / 130) * 100%);"></div>
+        </div>
+        <div style="font-size: 11px; color: #94a3b8; margin-top: 5px; text-align: right;">Target: 130 Credits</div>
+      </div>
+    </div>
+
+    <!-- Current Courses Section -->
+    <div class="courses-section">
+      <div class="courses-header">
+        <h2>Enrolled Courses (This Semester)</h2>
+      </div>
+
+      {% if current_courses %}
+      <div class="courses-list">
+        {% for course in current_courses %}
+        <div class="course-item">
+          <div class="course-info">
+            <h3>{{ course.result_sheet.course_title }}</h3>
+            <p>Credit: {{ course.result_sheet.course_credit }} &nbsp;|&nbsp; Instructor: {{ course.result_sheet.teacher_batch.teacher.teacher_name }}</p>
+          </div>
+          <div class="course-status">
+            <span class="dot"></span>
+            In Progress
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+        </svg>
+        <h3>No Active Courses</h3>
+        <p>You are not enrolled in any courses for the current semester.</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <!-- Finished Courses Section -->
+    <div class="courses-section" style="margin-top: 30px;">
+      <div class="courses-header">
+        <h2>Finished Courses</h2>
+      </div>
+
+      {% if finished_courses %}
+      <div class="courses-list">
+        {% for course in finished_courses %}
+        <div class="course-item">
+          <div class="course-info">
+            <h3>{{ course.result_sheet.course_title }}</h3>
+            <p>Credit: {{ course.result_sheet.course_credit }} &nbsp;|&nbsp; Semester: {{ course.result_sheet.semester }}</p>
+          </div>
+          <div class="course-status" style="background: #f0fdf4; color: #166534;">
+            <span class="dot" style="background: #22c55e; animation: none; box-shadow: none;"></span>
+            {% if course.cgpa %}CGPA: {{ course.cgpa }}{% else %}Finished{% endif %}
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+      {% else %}
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+          stroke-width="1.5">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5" />
+        </svg>
+        <h3>No Finished Courses</h3>
+        <p>You haven't completed any courses yet.</p>
+      </div>
+      {% endif %}
+    </div>
+
+  </main>
+
+  <script>
+    // Simple script to trigger the progress bar animation after load
+    window.addEventListener('load', function () {
+      const progressBar = document.querySelector('.progress-bar');
+      if (progressBar) {
+        const width = progressBar.style.width;
+        progressBar.style.width = '0%';
+        setTimeout(() => {
+          progressBar.style.width = width;
+        }, 300);
+      }
+    });
+  </script>
+</body>
+
+</html>

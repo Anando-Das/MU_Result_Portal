@@ -1,0 +1,166 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}Alumni — Metropolitan University{% endblock %}
+{% block meta_description %}Join the Metropolitan University alumni community — stay connected, give back, mentor students, and celebrate your Metropolitan legacy.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/community-outreach.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Stay Connected</p>
+    <h1 class="page-hero-title">Metropolitan Alumni</h1>
+    <p class="page-hero-subtitle">Once a Cardinal, always a Cardinal. Your Metropolitan story doesn't end at graduation — it's just beginning.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Alumni</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="page-intro-grid">
+        <div class="page-intro-text">
+          <div class="section-accent-line"></div>
+          <h2 class="page-section-title">Welcome Back, Cardinal</h2>
+          <p>Metropolitan's alumni community spans 150+ countries with over 180,000 graduates who are shaping medicine, law, technology, the arts, government, and every corner of human endeavor. Your bond to Metropolitan never fades.</p>
+          <p>From exclusive networking events to mentorship programs, career resources, and campus benefits — the Metropolitan alumni community is one of the most vibrant in the world.</p>
+        </div>
+        <div class="page-intro-img">
+          <img src="{% static 'images/grad-students.jpg' %}" alt="Metropolitan alumni" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-inner">
+    <div class="page-stats-row">
+      <div class="page-stat-box">
+        <div class="page-stat-num">180,000+</div>
+        <div class="page-stat-label">Alumni Worldwide</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">150+</div>
+        <div class="page-stat-label">Countries Represented</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">60+</div>
+        <div class="page-stat-label">Alumni Chapters Globally</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">$2.1B</div>
+        <div class="page-stat-label">Raised for Student Scholarships</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Ways to Stay Engaged</h2>
+      <p class="page-section-subtitle">Give back, stay connected, and help shape the next generation of Metropolitan leaders.</p>
+      <div class="page-cards-grid">
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/community-outreach.jpg' %}" alt="Give Back" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Giving</div>
+            <h3 class="page-card-title">Support the Next Generation</h3>
+            <p class="page-card-desc">Your gifts fund scholarships, research programs, and campus infrastructure that transforms the lives of future Cardinals.</p>
+            <a href="#" style="display:inline-block;margin-top:16px;color:#8c1515;font-weight:600;font-family:Inter,sans-serif;font-size:.9rem;">Give Now →</a>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/dialogue-event.jpg' %}" alt="Mentorship" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Mentorship</div>
+            <h3 class="page-card-title">Become a Mentor</h3>
+            <p class="page-card-desc">Share your experience and wisdom with current students navigating career decisions, graduate school, and life transitions.</p>
+            <a href="#" style="display:inline-block;margin-top:16px;color:#8c1515;font-weight:600;font-family:Inter,sans-serif;font-size:.9rem;">Join Program →</a>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/event-lecture.jpg' %}" alt="Alumni Events" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Events</div>
+            <h3 class="page-card-title">Alumni Events & Reunions</h3>
+            <p class="page-card-desc">Reconnect with classmates at annual reunions, networking nights, regional chapter events, and virtual gatherings worldwide.</p>
+            <a href="{% url 'portal:events' %}" style="display:inline-block;margin-top:16px;color:#8c1515;font-weight:600;font-family:Inter,sans-serif;font-size:.9rem;">Browse Events →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Alumni Benefits</h2>
+      <p class="page-section-subtitle">Your Metropolitan degree comes with lifelong advantages — professional, personal, and social.</p>
+      <div class="page-list-grid">
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Career Services for Life</h4>
+            <p>Access career coaching, job boards, and employer connections at any point in your professional journey.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 14l9-5-9-5-9 5 9 5zM12 14v7m0-7L3 9"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Library Access</h4>
+            <p>Continue your intellectual journey with alumni access to Metropolitan's world-class library collections and digital databases.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Recreation & Campus Facilities</h4>
+            <p>Eligible alumni can purchase memberships to campus recreation facilities, pools, and fitness centers.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Global Alumni Network</h4>
+            <p>Connect with fellow Cardinals in 60+ countries through regional chapters, online directories, and networking events.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Your Legacy Lives On</h2>
+      <p class="page-cta-desc">Update your alumni profile, get your alumni ID, and join the conversation in the Metropolitan alumni community.</p>
+      <div class="page-cta-btns">
+        <a href="#" class="btn-primary-page">Update Your Profile</a>
+        <a href="#" class="btn-outline-page">Give Back</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

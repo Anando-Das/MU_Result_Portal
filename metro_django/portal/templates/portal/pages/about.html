@@ -1,0 +1,163 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}About Metropolitan University{% endblock %}
+{% block meta_description %}Discover Metropolitan University's history, mission, leadership, and commitment to discovery, learning, and community impact since 1885.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/campus-hills.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Our Story</p>
+    <h1 class="page-hero-title">About Metropolitan University</h1>
+    <p class="page-hero-subtitle">A place of intellectual expansiveness, wide-ranging perspectives, and freedom to explore new lines of thinking since 1885.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>About</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="page-intro-grid">
+        <div class="page-intro-text">
+          <div class="section-accent-line"></div>
+          <h2 class="page-section-title">Our Mission</h2>
+          <p>At Metropolitan University, our mission of discovery and learning is energized by a spirit of optimism and possibility. Here you'll find a place of intellectual expansiveness, wide-ranging perspectives, and freedom to explore new lines of thinking.</p>
+          <p>Buzzing with ideas and innovation, approaching questions with openness and curiosity, pursuing excellence in all we do — this is Metropolitan.</p>
+        </div>
+        <div class="page-intro-img">
+          <img src="{% static 'images/quote-background.jpg' %}" alt="Metropolitan campus" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-inner">
+    <div class="page-stats-row">
+      <div class="page-stat-box">
+        <div class="page-stat-num">1885</div>
+        <div class="page-stat-label">Year Founded</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">17,000+</div>
+        <div class="page-stat-label">Students Enrolled</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">2,400+</div>
+        <div class="page-stat-label">Faculty Members</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">Top 10</div>
+        <div class="page-stat-label">National University Ranking</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Our History</h2>
+      <p class="page-section-subtitle">From a small college founded in 1885 to a world-class research university — the story of Metropolitan is one of relentless ambition.</p>
+      <div class="page-timeline">
+        <div class="timeline-item">
+          <div class="timeline-year">1885</div>
+          <div class="timeline-title">Founding of Metropolitan University</div>
+          <div class="timeline-desc">Established with a mission of discovery and service, Metropolitan opened its doors with 30 students and a single building on the edge of the city.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1912</div>
+          <div class="timeline-title">First Olympic Medalists</div>
+          <div class="timeline-desc">Metropolitan athletes competed in the Olympics for the first time, beginning a tradition of Olympic excellence that continues to this day.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1952</div>
+          <div class="timeline-title">Graduate School Expansion</div>
+          <div class="timeline-desc">The university launched its first doctoral programs, transforming Metropolitan into a leading research institution.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">1985</div>
+          <div class="timeline-title">Centennial and Global Growth</div>
+          <div class="timeline-desc">On its 100th anniversary, Metropolitan enrolled students from over 100 countries and established its first international research partnerships.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">2010</div>
+          <div class="timeline-title">AI & Innovation Center Opens</div>
+          <div class="timeline-desc">The Metropolitan AI Lab launched, quickly becoming one of the top artificial intelligence research centers in the world.</div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-year">Today</div>
+          <div class="timeline-title">Leading the Next Century</div>
+          <div class="timeline-desc">With $94M in annual research funding and students from 150+ countries, Metropolitan continues to shape the future across every field of human endeavor.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">University Leadership</h2>
+      <p class="page-section-subtitle">Metropolitan is guided by a team of distinguished scholars, administrators, and leaders committed to our enduring mission.</p>
+      <div class="page-profile-grid">
+        <div class="page-profile-card">
+          <div class="page-profile-img">
+            <img src="{% static 'images/faculty-portrait.jpg' %}" alt="President" loading="lazy" />
+          </div>
+          <div class="page-profile-info">
+            <div class="page-profile-name">Dr. Marcus Webb</div>
+            <div class="page-profile-role">President</div>
+          </div>
+        </div>
+        <div class="page-profile-card">
+          <div class="page-profile-img">
+            <img src="{% static 'images/faculty-portrait.jpg' %}" alt="Provost" loading="lazy" />
+          </div>
+          <div class="page-profile-info">
+            <div class="page-profile-name">Dr. Aisha Ndiaye</div>
+            <div class="page-profile-role">Provost & VP Academic Affairs</div>
+          </div>
+        </div>
+        <div class="page-profile-card">
+          <div class="page-profile-img">
+            <img src="{% static 'images/faculty-portrait.jpg' %}" alt="VP Research" loading="lazy" />
+          </div>
+          <div class="page-profile-info">
+            <div class="page-profile-name">Dr. Li Zhang</div>
+            <div class="page-profile-role">VP for Research</div>
+          </div>
+        </div>
+        <div class="page-profile-card">
+          <div class="page-profile-img">
+            <img src="{% static 'images/faculty-portrait.jpg' %}" alt="Dean of Students" loading="lazy" />
+          </div>
+          <div class="page-profile-info">
+            <div class="page-profile-name">Dr. Sofia Herrera</div>
+            <div class="page-profile-role">Dean of Students</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Become Part of Our Story</h2>
+      <p class="page-cta-desc">Whether you're a prospective student, researcher, partner, or donor — there's a place for you in the Metropolitan community.</p>
+      <div class="page-cta-btns">
+        <a href="{% url 'portal:admission' %}" class="btn-primary-page">Apply Now</a>
+        <a href="{% url 'portal:visitors' %}" class="btn-outline-page">Visit Us</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

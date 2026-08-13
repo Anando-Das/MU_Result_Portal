@@ -1,0 +1,10 @@
+*.log
+.DS_Store
+db.sqlite3
+__pycache__/
+*.pyc
+/.idea
+/.vscode
+/.zed
+/.cursor/
+Thumbs.db

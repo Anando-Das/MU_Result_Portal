@@ -1,0 +1,171 @@
+{% extends 'portal/teachers/base_dashboard.html' %}
+
+{% block title %}Results — Metropolitan{% endblock %}
+
+{% block active_results %}active{% endblock %}
+
+{% block header_title %}Results{% endblock %}
+{% block header_subtitle %}Manage, update, or upload new academic results for your student batches.{% endblock %}
+
+{% block content %}
+<style>
+  .results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 30px;
+  }
+  
+  .result-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    padding: 20px;
+    text-align: center;
+    position: relative;
+    border-top: 4px solid #cc0000;
+  }
+  
+  .result-card h3 {
+    margin-top: 10px;
+    margin-bottom: 5px;
+    color: #333;
+    font-family: "Playfair Display", serif;
+  }
+  
+  .result-card p {
+    color: #666;
+    margin: 5px 0;
+    font-size: 0.9em;
+  }
+  
+  .result-card .badge {
+    background: #eef2ff;
+    color: #4f46e5;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 500;
+    display: inline-block;
+    margin-bottom: 10px;
+  }
+  
+  .btn-update {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #004b87;
+    color: white;
+    text-align: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 15px;
+    transition: background 0.2s;
+  }
+  
+  .btn-update:hover {
+    background: #003665;
+    color: white;
+  }
+  
+  .delete-sheet-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(204, 0, 0, 0.1);
+    color: #cc0000;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .delete-sheet-btn:hover {
+    background: #cc0000;
+    color: white;
+  }
+</style>
+
+<div class="page" style="background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 40px;">
+  <h2 style="margin-top: 0; color: #333; font-family: 'Playfair Display', serif;">Create Result Sheet</h2>
+  
+  <form method="POST" action="{% url 'portal:teachers.results' %}" style="display: flex; flex-direction: column; gap: 15px;">
+    {% csrf_token %}
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <div>
+        <label for="batch" style="display: block; margin-bottom: 5px; color: #555;">Select Batch</label>
+        <select name="batch" id="batch" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+          <option value="">Select batch...</option>
+          {% for batch in teacher_batches %}
+            <option value="{{ batch.id }}">Batch {{ batch.batch }} - Section {{ batch.section }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div>
+        <label for="semester" style="display: block; margin-bottom: 5px; color: #555;">Semester</label>
+        <input type="text" name="semester" id="semester" placeholder="e.g., Spring 2024" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <div>
+        <label for="course_title" style="display: block; margin-bottom: 5px; color: #555;">Course Title</label>
+        <input type="text" name="course_title" id="course_title" placeholder="e.g., Data Structures" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      </div>
+      <div>
+        <label for="course_credit" style="display: block; margin-bottom: 5px; color: #555;">Course Credit</label>
+        <input type="number" step="0.5" name="course_credit" id="course_credit" placeholder="e.g., 3.0" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      </div>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+      <div>
+        <label for="start_date" style="display: block; margin-bottom: 5px; color: #555;">Start Date</label>
+        <input type="date" name="start_date" id="start_date" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      </div>
+      <div>
+        <label for="end_date" style="display: block; margin-bottom: 5px; color: #555;">End Date (Deadline)</label>
+        <input type="date" name="end_date" id="end_date" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+      </div>
+    </div>
+
+    <div>
+      <button type="submit" style="padding: 10px 20px; background: #004b87; color: white; border: none; border-radius: 4px; font-weight: 500; cursor: pointer;">
+        Create Result Sheet
+      </button>
+    </div>
+  </form>
+</div>
+
+<h3 style="font-family: 'Playfair Display', serif; color: #333; margin-bottom: 10px;">My Result Sheets</h3>
+{% if result_sheets %}
+<div class="results-grid">
+  {% for sheet in result_sheets %}
+  <div class="result-card">
+    <form method="post" action="{% url 'portal:teachers.deleteResult' sheet.id %}" style="margin:0;">
+      {% csrf_token %}
+      <button type="submit" class="delete-sheet-btn" title="Delete Result Sheet" onclick="return confirm('Are you sure you want to delete this result sheet? All associated student results will be permanently lost.');">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+      </button>
+    </form>
+    <div class="badge">{{ sheet.semester }}</div>
+    <h3>{{ sheet.course_title }}</h3>
+    <p><strong>Batch:</strong> {{ sheet.teacher_batch.batch }} (Sec {{ sheet.teacher_batch.section }})</p>
+    <p style="font-size: 0.8em; color: #888;">Deadline: {{ sheet.end_date }}</p>
+    
+    <a href="{% url 'portal:teachers.updateResult' sheet.id %}" class="btn-update">Update Result</a>
+  </div>
+  {% endfor %}
+</div>
+{% else %}
+<p style="color: #666;">You haven't created any result sheets yet.</p>
+{% endif %}
+
+{% endblock %}

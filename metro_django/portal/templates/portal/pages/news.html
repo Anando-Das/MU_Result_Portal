@@ -1,0 +1,151 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}Campus News — Metropolitan University{% endblock %}
+{% block meta_description %}The latest news, stories, and research from Metropolitan University — covering people, innovation, health, and community.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/research-students.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Updates</p>
+    <h1 class="page-hero-title">Metropolitan News</h1>
+    <p class="page-hero-subtitle">Stories about people, research, and innovation shaping the world from our campus.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>News</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+
+      <!-- Topic Tabs -->
+      <div class="page-tabs" id="news-tabs">
+        <button class="page-tab active" onclick="filterNews(this, 'all')">All Stories</button>
+        <button class="page-tab" onclick="filterNews(this, 'research')">Research</button>
+        <button class="page-tab" onclick="filterNews(this, 'athletics')">Athletics</button>
+        <button class="page-tab" onclick="filterNews(this, 'community')">Community</button>
+        <button class="page-tab" onclick="filterNews(this, 'technology')">Technology</button>
+        <button class="page-tab" onclick="filterNews(this, 'health')">Health</button>
+      </div>
+
+      <!-- Featured News -->
+      <div class="page-news-featured">
+        <article class="page-news-featured-card" data-cat="research">
+          <div class="page-card-img" style="height:320px;">
+            <img src="{% static 'images/research-students.jpg' %}" alt="Why research matters" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">In the Spotlight · Research</div>
+            <h3 class="page-card-title" style="font-size:1.5rem;">Why Research Matters More Than Ever</h3>
+            <p class="page-card-desc">As global challenges intensify, Metropolitan researchers are at the forefront — connecting discoveries in the lab to solutions in the real world.</p>
+            <a href="#" style="display:inline-block;margin-top:16px;color:#8c1515;font-family:Inter,sans-serif;font-size:.9rem;font-weight:600;">Read Story →</a>
+          </div>
+        </article>
+
+        <div class="page-news-small-stack">
+          <article class="page-news-small-card" data-cat="athletics">
+            <div class="thumb">
+              <img src="{% static 'images/cricket-team.jpg' %}" alt="Women's cricket" loading="lazy" />
+            </div>
+            <div class="info">
+              <div class="page-card-tag">Athletics</div>
+              <div class="page-card-title" style="font-size:.98rem;">Women's Cricket Caps Dominant Season with Championship Title</div>
+            </div>
+          </article>
+          <article class="page-news-small-card" data-cat="health">
+            <div class="thumb">
+              <img src="{% static 'images/wellness-center.jpg' %}" alt="Wellness Center" loading="lazy" />
+            </div>
+            <div class="info">
+              <div class="page-card-tag">Health</div>
+              <div class="page-card-title" style="font-size:.98rem;">New Wellness Center Opens Doors to Students and Community</div>
+            </div>
+          </article>
+          <article class="page-news-small-card" data-cat="community">
+            <div class="thumb">
+              <img src="{% static 'images/sustainability-campus.jpg' %}" alt="Sustainability" loading="lazy" />
+            </div>
+            <div class="info">
+              <div class="page-card-tag">Community</div>
+              <div class="page-card-title" style="font-size:.98rem;">Sustainability Initiative Reduces Campus Carbon Footprint by 40%</div>
+            </div>
+          </article>
+        </div>
+      </div>
+
+      <!-- More News Grid -->
+      <div class="page-cards-grid" style="margin-top:28px;">
+        <article class="page-card" data-cat="technology">
+          <div class="page-card-img">
+            <img src="{% static 'images/ai-lab.jpg' %}" alt="AI Lab" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Technology</div>
+            <h3 class="page-card-title">AI Lab Partnership Drives Innovation in Local Industries</h3>
+            <p class="page-card-desc">Metropolitan's AI research center announces a landmark collaboration with regional tech firms to accelerate AI adoption in healthcare and logistics.</p>
+          </div>
+        </article>
+        <article class="page-card" data-cat="community">
+          <div class="page-card-img">
+            <img src="{% static 'images/community-outreach.jpg' %}" alt="Community outreach" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Community</div>
+            <h3 class="page-card-title">Students Launch Outreach Program Serving 5,000 Local Families</h3>
+            <p class="page-card-desc">A student-led initiative in collaboration with the School of Social Sciences is delivering food, tutoring, and wellness services across the city.</p>
+          </div>
+        </article>
+        <article class="page-card" data-cat="research">
+          <div class="page-card-img">
+            <img src="{% static 'images/grad-students.jpg' %}" alt="Graduate research" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Research</div>
+            <h3 class="page-card-title">Graduate Researchers Win National Science Foundation Grant</h3>
+            <p class="page-card-desc">A team of PhD candidates in environmental science secured a $2.4M NSF grant to study climate adaptation strategies in coastal cities.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Stay Connected to Metropolitan</h2>
+      <p class="page-cta-desc">Subscribe to our newsletter and never miss a story, research update, or milestone from our vibrant university community.</p>
+      <div class="page-cta-btns">
+        <a href="#" class="btn-primary-page">Subscribe to Newsletter</a>
+        <a href="{% url 'portal:events' %}" class="btn-outline-page">Upcoming Events</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function filterNews(btn, cat) {
+  document.querySelectorAll('#news-tabs .page-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  const allCards = document.querySelectorAll('[data-cat]');
+  allCards.forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+</script>
+{% endblock %}

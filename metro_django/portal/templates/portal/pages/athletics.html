@@ -1,0 +1,138 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}Athletics — Metropolitan University{% endblock %}
+{% block meta_description %}Metropolitan University Cardinals — a tradition of athletic excellence with 45 national championships and Olympic medal heritage.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/cricket-team.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">The Cardinals</p>
+    <h1 class="page-hero-title">Athletics at Metropolitan</h1>
+    <p class="page-hero-subtitle">Providing student-athletes the opportunity to achieve excellence both in competition and in the classroom.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Athletics</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="page-intro-grid">
+        <div class="page-intro-text">
+          <div class="section-accent-line"></div>
+          <h2 class="page-section-title">Excellence On and Off the Field</h2>
+          <p>The Metropolitan Cardinals are synonymous with championship-level performance. With 45 national titles and Olympic representation at every games since 1912, our athletic tradition is unmatched. But at Metropolitan, competition is only part of the story.</p>
+          <p>Student-athletes at Metropolitan are mentored to be leaders, scholars, and community advocates — achieving excellence in every dimension of life.</p>
+        </div>
+        <div class="page-intro-img">
+          <img src="{% static 'images/recreation-wellness.jpg' %}" alt="Athletics facilities" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-inner">
+    <div class="page-stats-row">
+      <div class="page-stat-box">
+        <div class="page-stat-num">45</div>
+        <div class="page-stat-label">National Championships</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">335</div>
+        <div class="page-stat-label">Olympic Medals Won</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">36</div>
+        <div class="page-stat-label">Varsity Sports Programs</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">900+</div>
+        <div class="page-stat-label">Student-Athletes Enrolled</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Our Athletic Legacy</h2>
+      <p class="page-section-subtitle">From cricket fields to swimming pools — the Cardinals compete with heart in every arena.</p>
+      <div class="page-cards-grid">
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/cricket-team.jpg' %}" alt="Home of Champions" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Championships</div>
+            <h3 class="page-card-title">Home of Champions</h3>
+            <p class="page-card-desc">Metropolitan's 45 national championships are the most for any university — a product of culture, commitment, and community support.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/student-quote-bg.jpg' %}" alt="Olympic Excellence" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Olympic Heritage</div>
+            <h3 class="page-card-title">Olympic Excellence</h3>
+            <p class="page-card-desc">The Cardinals have produced at least one medalist in every Olympics since 1912, totaling 335 medals from 196 outstanding athletes.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/community-outreach.jpg' %}" alt="Community Impact" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Community</div>
+            <h3 class="page-card-title">Multidimensional Impact</h3>
+            <p class="page-card-desc">Metropolitan student-athletes go beyond the game with community involvement, advocacy, and leadership that echoes beyond the field.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">varsity sports programs</h2>
+      <p class="page-section-subtitle">Metropolitan fields teams in 36 varsity sports competing at the highest national levels.</p>
+      <div class="page-list-grid">
+        {% for sport in sports %}
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>{{ sport.name }}</h4>
+            <p>{{ sport.detail }}</p>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Join the Cardinal Family</h2>
+      <p class="page-cta-desc">Interested in competing at Metropolitan? Explore recruitment opportunities and learn more about our athletic programs and scholarship options.</p>
+      <div class="page-cta-btns">
+        <a href="{% url 'portal:admission' %}" class="btn-primary-page">Apply to Compete</a>
+        <a href="#" class="btn-outline-page">All Sports</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

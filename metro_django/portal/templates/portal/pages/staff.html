@@ -1,0 +1,135 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}For Staff — Metropolitan University{% endblock %}
+{% block meta_description %}Resources and information for Metropolitan University staff members — HR, facilities, IT, and campus services.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/sustainability-campus.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Information For</p>
+    <h1 class="page-hero-title">Staff Resources</h1>
+    <p class="page-hero-subtitle">Tools, policies, and services to support Metropolitan staff in their vital work across campus.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Staff</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Staff Quick Links</h2>
+      <p class="page-section-subtitle">Access the tools and systems you need to do your best work every day at Metropolitan.</p>
+      <div class="page-list-grid">
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Human Resources</h4>
+            <p>Benefits, payroll, time-off requests, employee handbook, and onboarding support for all Metropolitan staff.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>IT & Technology</h4>
+            <p>Request IT support, access university systems, manage your devices, and stay secure with cyber guidelines.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Facilities & Campus</h4>
+            <p>Report maintenance issues, book rooms, access campus maps, and request facility support services.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Policies & Forms</h4>
+            <p>Access official university policies, download forms, and find compliance documentation for your department.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>  
+          </div>
+          <div class="page-list-content">
+            <h4>Finance & Procurement</h4>
+            <p>Submit expense reports, manage purchase orders, and access budget dashboards for your unit.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Health & Benefits</h4>
+            <p>Review your health insurance, dental, vision, retirement plans, and employee wellness programs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Professional Development</h2>
+      <p class="page-section-subtitle">Metropolitan invests in its people. Explore training, workshops, and growth opportunities for staff at every level.</p>
+      <div class="page-cards-grid">
+        <article class="page-card">
+          <div class="page-card-body" style="padding-top: 32px;">
+            <div class="page-card-tag">Leadership</div>
+            <h3 class="page-card-title">Leadership Development Program</h3>
+            <p class="page-card-desc">A 12-month cohort program for mid-level staff aspiring to senior leadership roles within the university system.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-body" style="padding-top: 32px;">
+            <div class="page-card-tag">Skills</div>
+            <h3 class="page-card-title">Skills & Certification Training</h3>
+            <p class="page-card-desc">Access LinkedIn Learning, professional certification funding, and in-person workshops through the Office of Human Resources.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-body" style="padding-top: 32px;">
+            <div class="page-card-tag">Tuition</div>
+            <h3 class="page-card-title">Tuition Benefit Program</h3>
+            <p class="page-card-desc">Eligible staff and dependents can take Metropolitan courses at reduced or no cost, supporting lifelong learning for the whole family.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Join the Metropolitan Team</h2>
+      <p class="page-cta-desc">We are always looking for talented, passionate individuals to join our staff. Explore open positions across all departments.</p>
+      <div class="page-cta-btns">
+        <a href="#" class="btn-primary-page">View Open Positions</a>
+        <a href="#" class="btn-outline-page">Contact HR</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

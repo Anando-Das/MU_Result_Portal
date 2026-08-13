@@ -1,0 +1,171 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}Events — Metropolitan University{% endblock %}
+{% block meta_description %}Explore upcoming events at Metropolitan University — lectures, exhibitions, performances, seminars, and community gatherings.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/event-performance.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Calendar</p>
+    <h1 class="page-hero-title">Events at Metropolitan</h1>
+    <p class="page-hero-subtitle">From world-class performances to groundbreaking lectures — there's always something happening on our campus.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Events</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="page-tabs" id="event-tabs">
+        <button class="page-tab active" onclick="filterEvents(this, 'all')">All Events</button>
+        <button class="page-tab" onclick="filterEvents(this, 'performance')">Performance</button>
+        <button class="page-tab" onclick="filterEvents(this, 'lecture')">Lectures</button>
+        <button class="page-tab" onclick="filterEvents(this, 'exhibition')">Exhibition</button>
+        <button class="page-tab" onclick="filterEvents(this, 'seminar')">Seminars</button>
+      </div>
+
+      <div class="page-events-grid" id="events-grid">
+        <article class="page-event-card" data-cat="performance">
+          <div class="page-event-date">
+            <div class="page-event-month">MAY</div>
+            <div class="page-event-day">31</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Performance</div>
+            <div class="page-event-title">The Voice Studio Showcase — Sing On!</div>
+            <div class="page-event-time">🕑 02:30 PM · Campbell Recital Hall</div>
+          </div>
+        </article>
+
+        <article class="page-event-card" data-cat="exhibition">
+          <div class="page-event-date">
+            <div class="page-event-month">JUN</div>
+            <div class="page-event-day">01</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Exhibition</div>
+            <div class="page-event-title">Monthly Art Exhibit — The Natural World</div>
+            <div class="page-event-time">🕙 10:00 AM · Anderson Arts Center</div>
+          </div>
+        </article>
+
+        <article class="page-event-card" data-cat="lecture">
+          <div class="page-event-date">
+            <div class="page-event-month">JUN</div>
+            <div class="page-event-day">01</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Lecture</div>
+            <div class="page-event-title">Democracy at a Crossroads: Ballots, Bullets & the Future</div>
+            <div class="page-event-time">🕒 03:00 PM · Memorial Auditorium</div>
+          </div>
+        </article>
+
+        <article class="page-event-card" data-cat="seminar">
+          <div class="page-event-date">
+            <div class="page-event-month">JUN</div>
+            <div class="page-event-day">03</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Seminar</div>
+            <div class="page-event-title">Energy Seminar: Powering the AI Revolution Sustainably</div>
+            <div class="page-event-time">🕓 04:30 PM · Engineering Quad Auditorium</div>
+          </div>
+        </article>
+
+        <article class="page-event-card" data-cat="lecture">
+          <div class="page-event-date">
+            <div class="page-event-month">JUN</div>
+            <div class="page-event-day">07</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Lecture</div>
+            <div class="page-event-title">The Future of Medicine: Genomics & Personalized Care</div>
+            <div class="page-event-time">🕐 01:00 PM · Medical School Amphitheater</div>
+          </div>
+        </article>
+
+        <article class="page-event-card" data-cat="performance">
+          <div class="page-event-date">
+            <div class="page-event-month">JUN</div>
+            <div class="page-event-day">12</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Performance</div>
+            <div class="page-event-title">Metropolitan Symphony Orchestra — Summer Concert Series</div>
+            <div class="page-event-time">🕖 06:00 PM · Campus Amphitheater</div>
+          </div>
+        </article>
+
+        <article class="page-event-card" data-cat="seminar">
+          <div class="page-event-date">
+            <div class="page-event-month">JUN</div>
+            <div class="page-event-day">14</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Seminar</div>
+            <div class="page-event-title">Graduate Research Symposium 2026</div>
+            <div class="page-event-time">🕙 09:00 AM · All Day · Main Academic Hall</div>
+          </div>
+        </article>
+
+        <article class="page-event-card" data-cat="exhibition">
+          <div class="page-event-date">
+            <div class="page-event-month">JUN</div>
+            <div class="page-event-day">20</div>
+          </div>
+          <div class="page-event-info">
+            <div class="page-event-category">Exhibition</div>
+            <div class="page-event-title">Senior Design Exhibition — Engineering & Architecture</div>
+            <div class="page-event-time">🕙 11:00 AM · Student Union Gallery</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner" style="text-align:center;">
+      <div class="section-accent-line" style="margin: 0 auto 24px;"></div>
+      <h2 class="page-section-title">Host an Event at Metropolitan</h2>
+      <p class="page-section-subtitle" style="margin: 0 auto 36px;">Our world-class venues are available for conferences, performances, and academic gatherings. Reach out to our events team to learn more.</p>
+      <a href="#" class="btn-primary-page">Inquire About Venues</a>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Never Miss a Metropolitan Moment</h2>
+      <p class="page-cta-desc">Subscribe to our events newsletter and get weekly highlights delivered straight to your inbox.</p>
+      <div class="page-cta-btns">
+        <a href="#" class="btn-primary-page">Subscribe to Events</a>
+        <a href="{% url 'portal:news' %}" class="btn-outline-page">Campus News</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+function filterEvents(btn, cat) {
+  document.querySelectorAll('#event-tabs .page-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#events-grid [data-cat]').forEach(card => {
+    card.style.display = (cat === 'all' || card.dataset.cat === cat) ? '' : 'none';
+  });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,163 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}Campus Life — Metropolitan University{% endblock %}
+{% block meta_description %}Experience the vibrant Metropolitan University campus life with diverse housing, dining, clubs, wellness, and community programs.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/student-life.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Community</p>
+    <h1 class="page-hero-title">Campus Life at Metropolitan</h1>
+    <p class="page-hero-subtitle">Building a vibrant community of creative and accomplished people from every corner of the world.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Campus Life</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="page-intro-grid">
+        <div class="page-intro-text">
+          <div class="section-accent-line"></div>
+          <h2 class="page-section-title">Life Beyond the Classroom</h2>
+          <p>Metropolitan's campus is more than a place to study — it's a living, breathing community. With over 200 student organizations, residential halls, award-winning dining, world-class wellness facilities, and a culture of open dialogue, life at Metropolitan is an experience unlike any other.</p>
+          <p>Here, students find purpose, passion, and lifelong friendships in every corner of campus.</p>
+        </div>
+        <div class="page-intro-img">
+          <img src="{% static 'images/dialogue-event.jpg' %}" alt="Student community" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-inner">
+    <div class="page-stats-row">
+      <div class="page-stat-box">
+        <div class="page-stat-num">200+</div>
+        <div class="page-stat-label">Student Organizations</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">18</div>
+        <div class="page-stat-label">Residential Communities</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">30+</div>
+        <div class="page-stat-label">Dining Options On Campus</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">95%</div>
+        <div class="page-stat-label">Students Living On Campus (Year 1)</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">What Campus Life Offers</h2>
+      <p class="page-section-subtitle">From wellness to creativity to community engagement — there's a place for everyone at Metropolitan.</p>
+      <div class="page-cards-grid">
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/student-life.jpg' %}" alt="Student Life" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Housing & Community</div>
+            <h3 class="page-card-title">Student Life</h3>
+            <p class="page-card-desc">A residential campus with diverse housing options, exceptional dining, and vibrant communities that feel like home from day one.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/dialogue-event.jpg' %}" alt="Constructive Dialogue" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Engagement</div>
+            <h3 class="page-card-title">Constructive Dialogue</h3>
+            <p class="page-card-desc">Uplifting academic freedom and free speech, curiosity and critical inquiry, and open, inclusive exchange of ideas across campus.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/recreation-wellness.jpg' %}" alt="Recreation & Wellness" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Wellness</div>
+            <h3 class="page-card-title">Recreation & Wellness</h3>
+            <p class="page-card-desc">State-of-the-art gyms, pools, sport courts, and wellness programs encouraging movement, balance, and healthy living.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Campus Resources</h2>
+      <p class="page-section-subtitle">Everything you need to succeed, grow, and thrive during your time at Metropolitan.</p>
+      <div class="page-list-grid">
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Housing & Dining</h4>
+            <p>18 residential communities and 30+ dining options across campus to meet every need and preference.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Health & Counseling</h4>
+            <p>Comprehensive mental health, counseling, and medical services available free or low-cost to all enrolled students.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Career Services</h4>
+            <p>Resume help, internship placement, employer networking events, and 1:1 career coaching to launch your professional life.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Student Organizations</h4>
+            <p>Over 200 clubs and organizations spanning academics, the arts, activism, culture, recreation, and more.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Experience It for Yourself</h2>
+      <p class="page-cta-desc">Schedule a campus tour or attend one of our open events to see what life at Metropolitan is truly like.</p>
+      <div class="page-cta-btns">
+        <a href="{% url 'portal:visitors' %}" class="btn-primary-page">Visit Campus</a>
+        <a href="{% url 'portal:events' %}" class="btn-outline-page">Upcoming Events</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

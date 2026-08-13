@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Login — Metropolitan University</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #050B14;
+      color: #f1f5f9;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+    /* Ambient glow orbs */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -200px; left: -200px;
+      width: 500px; height: 500px;
+      background: radial-gradient(circle, rgba(220,38,38,0.08) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -200px; right: -200px;
+      width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(30,58,138,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+      pointer-events: none;
+    }
+
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      background: linear-gradient(135deg, rgba(15,29,50,0.95) 0%, rgba(30,58,138,0.3) 100%);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 48px 40px;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.5);
+      position: relative;
+      z-index: 1;
+    }
+
+    .login-logo {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .login-logo img {
+      height: 60px;
+      width: auto;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 12px rgba(220,38,38,0.3));
+    }
+    .login-logo-title {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .login-logo-sub {
+      font-size: 13px;
+      color: #dc2626;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .form-group { margin-bottom: 20px; }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 8px;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #fff;
+      font-size: 15px;
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .form-input:focus {
+      border-color: #dc2626;
+      box-shadow: 0 0 0 3px rgba(220,38,38,0.15);
+    }
+    .form-input::placeholder { color: #334155; }
+
+    .error-box {
+      background: rgba(220,38,38,0.12);
+      border: 1px solid rgba(220,38,38,0.3);
+      border-radius: 10px;
+      padding: 13px 16px;
+      color: #fca5a5;
+      font-size: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .error-box svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+    .btn-login {
+      width: 100%;
+      padding: 14px;
+      background: #dc2626;
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
+      letter-spacing: 0.02em;
+      margin-top: 8px;
+    }
+    .btn-login:hover {
+      background: #b91c1c;
+      box-shadow: 0 8px 25px rgba(220,38,38,0.4);
+      transform: translateY(-1px);
+    }
+    .btn-login:active { transform: translateY(0); }
+
+    .login-footer {
+      text-align: center;
+      margin-top: 24px;
+      font-size: 12px;
+      color: #334155;
+    }
+    .login-footer span { color: #dc2626; }
+    .divider {
+      height: 1px;
+      background: rgba(255,255,255,0.07);
+      margin: 28px 0;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-card">
+    <div class="login-logo">
+      <img src="{% static 'images/metropolitan-logo.png' %}" alt="Metropolitan University" />
+      <div class="login-logo-title">Metropolitan University</div>
+      <div class="login-logo-sub">Admin Panel</div>
+    </div>
+
+    {% if error %}
+    <div class="error-box">
+      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      </svg>
+      {{ error }}
+    </div>
+    {% endif %}
+
+    <form method="post" autocomplete="off">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="form-label" for="id_email">Admin Email</label>
+        <input
+          type="email"
+          name="email"
+          id="id_email"
+          class="form-input"
+          placeholder="admin@gmail.com"
+          required
+          autofocus
+        />
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="id_password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="id_password"
+          class="form-input"
+          placeholder="••••••••"
+          required
+        />
+      </div>
+      <button type="submit" class="btn-login">Sign In to Admin Panel</button>
+    </form>
+
+    <div class="divider"></div>
+    <div class="login-footer">
+      🔐 Restricted access — <span>Authorized personnel only</span>
+    </div>
+  </div>
+</body>
+</html>

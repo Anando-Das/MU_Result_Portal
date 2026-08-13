@@ -1,0 +1,172 @@
+{% extends "portal/admin/base.html" %}
+{% load static %}
+
+{% block title %}Teachers{% endblock %}
+{% block page_title %}All Teachers{% endblock %}
+{% block breadcrumb %}Admin / Users / Teachers{% endblock %}
+{% block nav_teachers %}active{% endblock %}
+
+{% block topbar_actions %}
+<form method="get" style="display:flex; gap:10px; align-items:center;">
+  <input type="search" name="q" value="{{ query }}" class="table-search" placeholder="Search by name or email…" />
+  <button type="submit" class="btn btn-ghost btn-sm">Search</button>
+  {% if query %}<a href="{% url 'portal:admin_teachers' %}" class="btn btn-ghost btn-sm">Clear</a>{% endif %}
+</form>
+<button class="btn btn-primary btn-sm" id="show-passwords-btn" onclick="openPasswordModal()">
+  <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+  Show Passwords
+</button>
+<form method="post" action="{% url 'portal:admin_approve_all_teachers' %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary btn-sm" onclick="return confirm('Are you sure you want to approve all pending teachers?');">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg>
+    Approve All
+  </button>
+</form>
+{% endblock %}
+
+{% block content %}
+<!-- Password Confirm Modal -->
+<div id="pw-modal" style="display:none; position:fixed; inset:0; z-index:9999; background:rgba(0,0,0,0.7); backdrop-filter:blur(6px); align-items:center; justify-content:center;">
+  <div style="background:linear-gradient(135deg,#0f1d32,#1e3a8a22); border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:40px; width:100%; max-width:400px; box-shadow:0 25px 60px rgba(0,0,0,0.6);">
+    <h3 style="font-size:18px;font-weight:700;color:#fff;margin-bottom:8px;">🔐 Admin Verification</h3>
+    <p style="font-size:14px;color:#64748b;margin-bottom:24px;">Enter the admin password to reveal all teacher passwords.</p>
+    <div id="pw-modal-error" style="display:none;background:rgba(220,38,38,0.12);border:1px solid rgba(220,38,38,0.3);border-radius:8px;padding:10px 14px;color:#fca5a5;font-size:13px;margin-bottom:16px;"></div>
+    <input type="password" id="admin-pw-input" placeholder="Admin password" style="width:100%;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:8px;padding:11px 14px;color:#fff;font-size:14px;font-family:'Inter',sans-serif;outline:none;margin-bottom:16px;box-sizing:border-box;" />
+    <div style="display:flex;gap:10px;">
+      <button onclick="verifyAndReveal()" style="flex:1;padding:11px;background:#dc2626;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;">Reveal Passwords</button>
+      <button onclick="closePasswordModal()" style="flex:1;padding:11px;background:rgba(255,255,255,0.07);color:#94a3b8;border:1px solid rgba(255,255,255,0.1);border-radius:8px;font-size:14px;font-family:'Inter',sans-serif;cursor:pointer;">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div class="table-card">
+  <div class="table-header">
+    <div>
+      <div class="table-header-title">Teacher List</div>
+      <div class="table-header-count">
+        {% if query %}Results for "{{ query }}" — {% endif %}{{ teachers.count }} teacher{{ teachers.count|pluralize }}
+      </div>
+    </div>
+  </div>
+  {% if teachers %}
+  <div style="overflow-x: auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Password</th>
+          <th>Department</th>
+          <th>Status</th>
+          <th>Joined</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for t in teachers %}
+        <tr>
+          <td style="color:#475569;">{{ forloop.counter }}</td>
+          <td style="color:#fff; font-weight:600; white-space:nowrap;">{{ t.teacher_name }}</td>
+          <td>{{ t.email }}</td>
+          <td>
+            <span class="pw-hidden" data-id="{{ t.id }}" data-type="teacher">
+              <span class="pw-cell" style="letter-spacing:0.15em; color:#475569;">••••••••</span>
+            </span>
+            <span class="pw-revealed" data-id="{{ t.id }}" data-type="teacher" style="display:none;">
+              <span class="pw-cell" style="color:#86efac;"></span>
+            </span>
+          </td>
+          <td>{{ t.dept }}</td>
+          <td>
+            {% if t.status == 'approved' %}
+              <span class="badge badge-green">Approved</span>
+            {% else %}
+              <span class="badge badge-yellow">Pending</span>
+            {% endif %}
+          </td>
+          <td style="white-space:nowrap;">{{ t.created_at|date:"M d, Y" }}</td>
+          <td style="display:flex; gap:5px;">
+            <a href="{% url 'portal:admin_toggle_teacher_status' t.id %}" class="btn btn-sm {% if t.status == 'approved' %}btn-ghost{% else %}btn-primary{% endif %}">
+              {% if t.status == 'approved' %}Mark Pending{% else %}Approve{% endif %}
+            </a>
+            <a href="{% url 'portal:admin_delete_teacher' t.id %}"
+               class="btn btn-danger btn-sm"
+               onclick="return confirm('Delete {{ t.teacher_name }}? This cannot be undone.')">
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+              Delete
+            </a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="empty-state">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+    <h3>{% if query %}No results found{% else %}No Teachers Yet{% endif %}</h3>
+    <p>{% if query %}Try a different search term.{% else %}Teachers will appear here once they sign up.{% endif %}</p>
+  </div>
+  {% endif %}
+</div>
+
+<script>
+  const verifyUrl = "{% url 'portal:admin_verify_password' %}";
+  const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+  function openPasswordModal() {
+    document.getElementById('pw-modal').style.display = 'flex';
+    document.getElementById('admin-pw-input').value = '';
+    document.getElementById('pw-modal-error').style.display = 'none';
+    setTimeout(() => document.getElementById('admin-pw-input').focus(), 100);
+  }
+
+  function closePasswordModal() {
+    document.getElementById('pw-modal').style.display = 'none';
+  }
+
+  document.getElementById('admin-pw-input').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') verifyAndReveal();
+    if (e.key === 'Escape') closePasswordModal();
+  });
+
+  async function verifyAndReveal() {
+    const pw = document.getElementById('admin-pw-input').value;
+    const errorEl = document.getElementById('pw-modal-error');
+    errorEl.style.display = 'none';
+
+    try {
+      const res = await fetch(verifyUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-CSRFToken': csrfToken },
+        body: JSON.stringify({ password: pw })
+      });
+      const data = await res.json();
+      if (!data.success) {
+        errorEl.textContent = data.message || 'Wrong password.';
+        errorEl.style.display = 'block';
+        return;
+      }
+      // Reveal teacher passwords
+      data.teachers.forEach(t => {
+        const hidden = document.querySelector(`.pw-hidden[data-id="${t.id}"][data-type="teacher"]`);
+        const revealed = document.querySelector(`.pw-revealed[data-id="${t.id}"][data-type="teacher"]`);
+        if (hidden) hidden.style.display = 'none';
+        if (revealed) {
+          revealed.style.display = 'inline';
+          revealed.querySelector('.pw-cell').textContent = t.plain_password || '(not set)';
+        }
+      });
+      // Update button
+      document.getElementById('show-passwords-btn').textContent = '✓ Revealed';
+      document.getElementById('show-passwords-btn').disabled = true;
+      closePasswordModal();
+    } catch(err) {
+      errorEl.textContent = 'An error occurred. Please try again.';
+      errorEl.style.display = 'block';
+    }
+  }
+</script>
+{% endblock %}

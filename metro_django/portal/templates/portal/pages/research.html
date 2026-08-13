@@ -1,0 +1,163 @@
+{% extends 'portal/base.html' %}
+{% load static %}
+
+{% block title %}Research — Metropolitan University{% endblock %}
+{% block meta_description %}Discover groundbreaking research at Metropolitan University driving discoveries vital to our world, our health, and our intellectual life.{% endblock %}
+
+{% block content %}
+<section class="page-hero">
+  <div class="page-hero-bg" style="background-image: url('{% static 'images/research-students.jpg' %}');"></div>
+  <div class="page-hero-overlay"></div>
+  <div class="page-hero-content">
+    <p class="page-hero-eyebrow">Discovery</p>
+    <h1 class="page-hero-title">Research at Metropolitan</h1>
+    <p class="page-hero-subtitle">Driving discoveries vital to our world, our health, and our intellectual life through collaboration and innovation.</p>
+  </div>
+</section>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <a href="{% url 'portal:welcome' %}">Home</a>
+    <span class="breadcrumb-sep">›</span>
+    <span>Research</span>
+  </div>
+</div>
+
+<div class="page-body">
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="page-intro-grid reverse">
+        <div class="page-intro-text">
+          <div class="section-accent-line"></div>
+          <h2 class="page-section-title">Innovation Without Boundaries</h2>
+          <p>Metropolitan University is one of the world's leading research institutions, generating ideas that transform industries, heal communities, and shape policy around the globe. Our researchers work across disciplines to tackle the most pressing challenges of our time.</p>
+          <p>With over $94M in annual research funding and partnerships with hundreds of industries worldwide, Metropolitan amplifies the impact of every discovery made on our campus.</p>
+        </div>
+        <div class="page-intro-img">
+          <img src="{% static 'images/ai-lab.jpg' %}" alt="AI Research Lab" />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="page-inner">
+    <div class="page-stats-row">
+      <div class="page-stat-box">
+        <div class="page-stat-num">6,699+</div>
+        <div class="page-stat-label">Research Projects Funded Annually</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">3,029</div>
+        <div class="page-stat-label">Top-Tier Journal Publications</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">400+</div>
+        <div class="page-stat-label">Industry Partnerships Worldwide</div>
+      </div>
+      <div class="page-stat-box">
+        <div class="page-stat-num">$94M</div>
+        <div class="page-stat-label">Annual Research Funding</div>
+      </div>
+    </div>
+  </div>
+
+  <section class="page-section page-section-alt">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Research Focus Areas</h2>
+      <p class="page-section-subtitle">Our interdisciplinary centers bring together the brightest minds to address humanity's most urgent questions.</p>
+      <div class="page-cards-grid">
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/ai-lab.jpg' %}" alt="AI & Technology" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Technology</div>
+            <h3 class="page-card-title">AI & Emerging Technologies</h3>
+            <p class="page-card-desc">Pioneering work in machine learning, robotics, and human-computer interaction redefining what's possible in technology and society.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/wellness-center.jpg' %}" alt="Health Research" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Health & Medicine</div>
+            <h3 class="page-card-title">Biomedical Research</h3>
+            <p class="page-card-desc">From genomics to public health, our medical researchers are extending lives and improving health outcomes for millions around the world.</p>
+          </div>
+        </article>
+        <article class="page-card">
+          <div class="page-card-img">
+            <img src="{% static 'images/sustainability-campus.jpg' %}" alt="Climate Research" loading="lazy" />
+          </div>
+          <div class="page-card-body">
+            <div class="page-card-tag">Environment</div>
+            <h3 class="page-card-title">Climate & Sustainability</h3>
+            <p class="page-card-desc">Developing solutions to the climate crisis through interdisciplinary research in energy, ecology, and environmental policy.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-section">
+    <div class="page-inner">
+      <div class="section-accent-line"></div>
+      <h2 class="page-section-title">Research Highlights</h2>
+      <p class="page-section-subtitle">A glimpse at the discoveries shaping our understanding of the world.</p>
+      <div class="page-list-grid">
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>AI-Assisted Drug Discovery</h4>
+            <p>Metropolitan researchers developed an AI model that identifies drug candidates 40× faster than traditional methods.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Carbon-Neutral Campus Initiative</h4>
+            <p>Our sustainability research has helped the campus reduce its carbon footprint by 40% over five years.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Quantum Computing Breakthrough</h4>
+            <p>The Physics Department achieved a milestone in quantum error correction with real-world computing implications.</p>
+          </div>
+        </div>
+        <div class="page-list-item">
+          <div class="page-list-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/></svg>
+          </div>
+          <div class="page-list-content">
+            <h4>Global Health Equity Study</h4>
+            <p>A landmark study identified key factors contributing to health disparities, influencing policy in 12 countries.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="page-cta-banner">
+    <div class="page-cta-inner">
+      <h2 class="page-cta-title">Partner With Metropolitan Research</h2>
+      <p class="page-cta-desc">Collaborate with our world-class researchers or explore funding opportunities that can bring your ideas to life.</p>
+      <div class="page-cta-btns">
+        <a href="#" class="btn-primary-page">Explore Research Centers</a>
+        <a href="#" class="btn-outline-page">Industry Partnerships</a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}
