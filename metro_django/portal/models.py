@@ -131,3 +131,17 @@ class Notice(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Department(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    num_courses = models.IntegerField(default=0)
+    total_credits = models.DecimalField(max_digits=5, decimal_places=1, default=0.0)
+    num_semesters = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    objects = models.Manager()
+
+    def __str__(self):
+        return self.name

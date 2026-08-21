@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Academic Result — {{ student.student_name }}</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 2cm;
+        }
+        body {
+            font-family: Helvetica, Arial, sans-serif;
+            color: #1e293b;
+            font-size: 11pt;
+            line-height: 1.5;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 3px solid #1e40af;
+            padding-bottom: 14px;
+            margin-bottom: 20px;
+        }
+        .university-name {
+            font-size: 22pt;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        .report-title {
+            font-size: 14pt;
+            color: #334155;
+            margin-top: 4px;
+        }
+        .student-info-box {
+            background: #f1f5f9;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            padding: 14px 18px;
+            margin-bottom: 22px;
+        }
+        .student-info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .student-info-table td {
+            padding: 4px 8px;
+            font-size: 11pt;
+            border: none;
+        }
+        .student-info-table td:first-child {
+            font-weight: bold;
+            color: #475569;
+            width: 35%;
+        }
+        .section-heading {
+            font-size: 13pt;
+            font-weight: bold;
+            color: #1e40af;
+            margin: 22px 0 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .result-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        .result-table th {
+            background: #1e40af;
+            color: #fff;
+            padding: 10px 12px;
+            text-align: left;
+            font-size: 10pt;
+            font-weight: bold;
+            letter-spacing: 0.04em;
+        }
+        .result-table td {
+            padding: 9px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 10pt;
+            color: #334155;
+        }
+        .result-table tr:nth-child(even) td {
+            background: #f8fafc;
+        }
+        .result-table tr:last-child td { border-bottom: none; }
+        .cgpa-cell {
+            font-weight: bold;
+            color: #16a34a;
+        }
+        .status-ongoing {
+            display: inline-block;
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 9pt;
+            font-weight: bold;
+        }
+        .summary-box {
+            background: #1e40af;
+            color: #fff;
+            border-radius: 8px;
+            padding: 16px 20px;
+            margin-top: 24px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .summary-item {
+            text-align: center;
+        }
+        .summary-label {
+            font-size: 9pt;
+            opacity: 0.8;
+            display: block;
+            margin-bottom: 4px;
+        }
+        .summary-value {
+            font-size: 18pt;
+            font-weight: bold;
+        }
+        .footer {
+            text-align: center;
+            font-size: 9pt;
+            color: #94a3b8;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 10px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="university-name">Metropolitan University</div>
+        <div class="report-title">
+            {% if result_type == 'current_semester' %}
+                Current Semester Academic Report
+            {% else %}
+                Full Academic History Report
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Student Info -->
+    <div class="student-info-box">
+        <table class="student-info-table">
+            <tr>
+                <td>Student Name:</td>
+                <td><strong>{{ student.student_name }}</strong></td>
+                <td>Student ID:</td>
+                <td><strong>{{ student.student_id }}</strong></td>
+            </tr>
+            <tr>
+                <td>Department:</td>
+                <td>{{ student.dept }}</td>
+                <td>Batch:</td>
+                <td>{{ student.batch }}</td>
+            </tr>
+            <tr>
+                <td>Section:</td>
+                <td>{{ student.section }}</td>
+                <td>Email:</td>
+                <td>{{ student.email }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Result Table -->
+    <div class="section-heading">
+        {% if result_type == 'current_semester' %}
+            Current Semester Courses
+        {% else %}
+            Complete Academic Record
+        {% endif %}
+    </div>
+
+    {% if results %}
+    <table class="result-table">
+        <thead>
+            <tr>
+                <th width="28%">Course Title</th>
+                <th width="12%">Semester</th>
+                <th width="8%">Credit</th>
+                <th width="7%">Att.</th>
+                <th width="7%">CT1</th>
+                <th width="7%">CT2</th>
+                <th width="7%">Asgn.</th>
+                <th width="8%">Mid</th>
+                <th width="8%">Final</th>
+                <th width="8%">Total</th>
+                <th width="8%">CGPA</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sr in results %}
+            <tr>
+                <td>{{ sr.result_sheet.course_title }}</td>
+                <td>{{ sr.result_sheet.semester }}</td>
+                <td style="text-align:center;">{{ sr.result_sheet.course_credit }}</td>
+                <td style="text-align:center;">{% if sr.attendance %}{{ sr.attendance }}{% else %}—{% endif %}</td>
+                <td style="text-align:center;">{% if sr.ct1 %}{{ sr.ct1 }}{% else %}—{% endif %}</td>
+                <td style="text-align:center;">{% if sr.ct2 %}{{ sr.ct2 }}{% else %}—{% endif %}</td>
+                <td style="text-align:center;">{% if sr.assignment %}{{ sr.assignment }}{% else %}—{% endif %}</td>
+                <td style="text-align:center;">{% if sr.mid_term %}{{ sr.mid_term }}{% else %}—{% endif %}</td>
+                <td style="text-align:center;">{% if sr.final_term %}{{ sr.final_term }}{% else %}—{% endif %}</td>
+                <td style="text-align:center; font-weight:bold;">{% if sr.total %}{{ sr.total }}{% else %}<span class="status-ongoing">Ongoing</span>{% endif %}</td>
+                <td style="text-align:center;" class="cgpa-cell">{% if sr.cgpa %}{{ sr.cgpa }}{% else %}—{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if result_type == 'full_history' %}
+    <!-- Summary -->
+    <table style="width:100%; margin-top: 20px; border-collapse: collapse;">
+        <tr>
+            <td style="width:33%; text-align:center; padding:14px; background:#1e40af; border-radius: 8px 0 0 8px;">
+                <div style="font-size:9pt; color:rgba(255,255,255,0.7); margin-bottom:4px;">CREDITS COMPLETED</div>
+                <div style="font-size:22pt; font-weight:bold; color:#fff;">{{ completed_credits }}</div>
+            </td>
+            <td style="width:33%; text-align:center; padding:14px; background:#1d4ed8;">
+                <div style="font-size:9pt; color:rgba(255,255,255,0.7); margin-bottom:4px;">CUMULATIVE CGPA</div>
+                <div style="font-size:22pt; font-weight:bold; color:#fff;">{{ cumulative_cgpa }}</div>
+            </td>
+            <td style="width:33%; text-align:center; padding:14px; background:#2563eb; border-radius: 0 8px 8px 0;">
+                <div style="font-size:9pt; color:rgba(255,255,255,0.7); margin-bottom:4px;">TOTAL COURSES</div>
+                <div style="font-size:22pt; font-weight:bold; color:#fff;">{{ results|length }}</div>
+            </td>
+        </tr>
+    </table>
+    {% endif %}
+
+    {% else %}
+    <p style="text-align:center; color:#94a3b8; padding: 20px;">No result data available for this period.</p>
+    {% endif %}
+
+    <div class="footer">
+        This is an officially generated document by Metropolitan University Admin Panel. &nbsp;|&nbsp; Generated on {% now "F d, Y H:i" %}
+    </div>
+
+</body>
+</html>

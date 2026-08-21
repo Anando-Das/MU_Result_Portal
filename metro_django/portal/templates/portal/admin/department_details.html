@@ -1,0 +1,118 @@
+{% extends 'portal/admin/base.html' %}
+{% block title %}{{ department.name }} Syllabus{% endblock %}
+{% block nav_departments %}active{% endblock %}
+{% block page_title %}{{ department.name }} Syllabus{% endblock %}
+{% block breadcrumb %}Dashboard / Departments / {{ department.name }}{% endblock %}
+
+{% block topbar_actions %}
+<a href="{% url 'portal:admin_download_syllabus_pdf' department.id %}" class="btn btn-primary">
+    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+    Download PDF
+</a>
+{% endblock %}
+
+{% block content %}
+<!-- Department Info Cards -->
+<div class="stats-row">
+    <div class="stat-card blue">
+        <div class="stat-icon blue">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+        </div>
+        <div class="stat-value">{{ department.num_courses }}</div>
+        <div class="stat-label">Total Courses</div>
+    </div>
+    <div class="stat-card green">
+        <div class="stat-icon green">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        </div>
+        <div class="stat-value">{{ department.total_credits }}</div>
+        <div class="stat-label">Total Credits</div>
+    </div>
+    <div class="stat-card yellow">
+        <div class="stat-icon yellow">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="stat-value">{{ department.num_semesters }}</div>
+        <div class="stat-label">Total Semesters</div>
+    </div>
+</div>
+
+{% if messages %}
+<div style="margin-bottom: 20px;">
+    {% for message in messages %}
+    <div style="padding: 12px 16px; border-radius: 8px; font-size: 14px; background: rgba(220,38,38,0.15); color: #fca5a5; border: 1px solid rgba(220,38,38,0.3);">
+        {{ message }}
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<div style="display: grid; grid-template-columns: 1fr 350px; gap: 24px; align-items: start;">
+    <!-- Course List -->
+    <div class="table-card">
+        <div class="table-header">
+            <div>
+                <div class="table-header-title">Courses</div>
+                <div class="table-header-count">Showing {{ courses.count }} courses</div>
+            </div>
+        </div>
+        {% if courses %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Code</th>
+                    <th>Course Title</th>
+                    <th>Credit</th>
+                    <th style="text-align: right;">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for course in courses %}
+                <tr>
+                    <td><span class="badge badge-blue">{{ course.course_code }}</span></td>
+                    <td><strong>{{ course.course_title }}</strong></td>
+                    <td>{{ course.credit }}</td>
+                    <td style="text-align: right;">
+                        <a href="{% url 'portal:admin_delete_course' department.id course.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to remove this course?');">
+                            Remove
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% else %}
+        <div class="empty-state">
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
+            <h3>No Courses Added</h3>
+            <p>Use the form to add courses to this department's syllabus.</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Add Course Form -->
+    <div class="form-card" style="padding: 24px;">
+        <h3 style="font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 20px;">Add New Course</h3>
+        <form action="{% url 'portal:admin_add_course' department.id %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+                <label class="form-label">Course ID / Code</label>
+                <input type="text" name="course_code" class="form-control" placeholder="e.g. CSE-111" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Course Title</label>
+                <input type="text" name="course_title" class="form-control" placeholder="e.g. Introduction to Programming" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Credit</label>
+                <input type="number" step="0.1" name="credit" class="form-control" placeholder="e.g. 3.0" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 10px;">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                Add Course
+            </button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Syllabus - {{ department.name }}</title>
+    <style>
+        @page {
+            size: a4 portrait;
+            margin: 2cm;
+            @frame header_frame {
+                -pdf-frame-content: header_content;
+                left: 2cm; width: 17cm; top: 1cm; height: 1cm;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 2cm; width: 17cm; top: 27cm; height: 1cm;
+            }
+        }
+        body {
+            font-family: Helvetica, sans-serif;
+            color: #333;
+            font-size: 12pt;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #dc2626;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .title {
+            font-size: 24pt;
+            font-weight: bold;
+            color: #dc2626;
+            margin: 0;
+            padding: 0;
+        }
+        .subtitle {
+            font-size: 16pt;
+            color: #555;
+            margin-top: 5px;
+        }
+        .info-table {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        .info-table td {
+            padding: 5px;
+            font-size: 11pt;
+        }
+        .course-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        .course-table th {
+            background-color: #f1f5f9;
+            color: #0f1d32;
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            text-align: left;
+            font-weight: bold;
+        }
+        .course-table td {
+            padding: 8px 10px;
+            border: 1px solid #cbd5e1;
+        }
+        .footer {
+            text-align: right;
+            font-size: 9pt;
+            color: #888;
+            border-top: 1px solid #ddd;
+            padding-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="header_content">
+        <!-- Header can be empty as it's defined in the @page -->
+    </div>
+
+    <div class="header">
+        <div class="title">Metropolitan University</div>
+        <div class="subtitle">Department of {{ department.name }}</div>
+    </div>
+
+    <h3>Syllabus Overview</h3>
+    <table class="info-table">
+        <tr>
+            <td><strong>Total Courses:</strong> {{ department.num_courses }}</td>
+            <td><strong>Total Credits:</strong> {{ department.total_credits }}</td>
+            <td><strong>Total Semesters:</strong> {{ department.num_semesters }}</td>
+        </tr>
+    </table>
+
+    <h3>Course List</h3>
+    <table class="course-table">
+        <thead>
+            <tr>
+                <th width="20%">Course Code</th>
+                <th width="60%">Course Title</th>
+                <th width="20%" style="text-align: center;">Credit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for course in courses %}
+            <tr>
+                <td>{{ course.course_code }}</td>
+                <td>{{ course.course_title }}</td>
+                <td style="text-align: center;">{{ course.credit }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="text-align: center;">No courses available for this department.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div id="footer_content" class="footer">
+        Page <pdf:pagenumber> of <pdf:pagecount> | Generated on {% now "Y-m-d H:i" %}
+    </div>
+
+</body>
+</html>

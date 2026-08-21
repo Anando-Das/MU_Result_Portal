@@ -116,3 +116,17 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# ============================================================
+# EMAIL (Gmail SMTP) — Replace with your credentials
+# ============================================================
+# STEP 1: Enable 2-Step Verification on your Google account
+# STEP 2: Go to Google Account > Security > App Passwords
+#         Generate a password for "Mail" and paste it below
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'anandod98@gmail.com'        # <-- Replace with your Gmail
+EMAIL_HOST_PASSWORD = 'fuwa muqh fbow cnxs'  # <-- Replace with 16-char App Password
+DEFAULT_FROM_EMAIL = 'anandod98@gmail.com'

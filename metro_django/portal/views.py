@@ -17,7 +17,7 @@ import xhtml2pdf.pisa as pisa
 from io import BytesIO
 
 # pyrefly: ignore [missing-import]
-from .models import Student, Teacher, Course, CourseFaculty, TeacherBatch, ResultSheet, StudentResult, Notice
+from .models import Student, Teacher, Course, CourseFaculty, TeacherBatch, ResultSheet, StudentResult, Notice, Department
 
 def welcome(request):
     return render(request, 'portal/welcome.html')
@@ -218,6 +218,9 @@ def student_dashboard(request):
     else:
         cumulative_cgpa = Decimal('0.00')
         
+    department = Department.objects.filter(name=student.dept).first()
+    syllabus_courses = Course.objects.filter(dept=student.dept).order_by('course_code')
+        
     context = {
         'student': student,
         'current_semester': current_semester,
@@ -225,8 +228,44 @@ def student_dashboard(request):
         'cumulative_cgpa': round(cumulative_cgpa, 2),
         'current_courses': current_courses,
         'finished_courses': finished_courses,
+        'department': department,
+        'syllabus_courses': syllabus_courses,
     }
     return render(request, 'portal/student_dashboard.html', context)
+
+def student_download_syllabus_pdf(request):
+    if 'student_id' not in request.session:
+        return redirect('/login')
+        
+    student_id = request.session['student_id']
+    student = Student.objects.get(id=student_id)
+    
+    department = Department.objects.filter(name=student.dept).first()
+    courses = Course.objects.filter(dept=student.dept).order_by('course_code')
+    
+    if not department:
+        # Fallback if department model doesn't exist for some reason
+        class DummyDept:
+            name = student.dept
+            num_courses = courses.count()
+            total_credits = sum(c.credit for c in courses)
+            num_semesters = 'N/A'
+        department = DummyDept()
+    
+    template_path = 'portal/admin/syllabus_pdf.html'
+    context = {'department': department, 'courses': courses}
+    
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="syllabus_{student.dept}.pdf"'
+    
+    template = get_template(template_path)
+    html = template.render(context)
+    
+    pisa_status = pisa.CreatePDF(html, dest=response)
+       
+    if pisa_status.err:
+       return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
 
 def teacher_login(request):
     if request.method == 'POST':
@@ -740,3 +779,343 @@ def admin_approve_all_teachers(request):
     
     Teacher.objects.filter(status='pending').update(status='approved')
     return redirect('portal:admin_teachers')
+
+def admin_departments(request):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+    
+    departments = Department.objects.all().order_by('-created_at')
+    return render(request, 'portal/admin/departments.html', {'departments': departments})
+
+def admin_create_department(request):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+        
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        num_courses = request.POST.get('num_courses', 0)
+        total_credits = request.POST.get('total_credits', 0.0)
+        num_semesters = request.POST.get('num_semesters', 0)
+        
+        if name:
+            Department.objects.create(
+                name=name,
+                num_courses=num_courses,
+                total_credits=total_credits,
+                num_semesters=num_semesters
+            )
+            return redirect('portal:admin_departments')
+            
+    return render(request, 'portal/admin/departments.html')
+
+def admin_department_details(request, dept_id):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+        
+    dept = get_object_or_404(Department, id=dept_id)
+    courses = Course.objects.filter(dept=dept.name).order_by('course_code')
+    return render(request, 'portal/admin/department_details.html', {
+        'department': dept,
+        'courses': courses
+    })
+
+def admin_add_course(request, dept_id):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+        
+    dept = get_object_or_404(Department, id=dept_id)
+    if request.method == 'POST':
+        course_code = request.POST.get('course_code')
+        course_title = request.POST.get('course_title')
+        credit = request.POST.get('credit')
+        
+        if course_code and course_title and credit:
+            # Check if course code already exists globally, as it's unique in the model
+            if Course.objects.filter(course_code=course_code).exists():
+                messages.error(request, f"Course code {course_code} already exists.")
+            else:
+                Course.objects.create(
+                    course_code=course_code,
+                    course_title=course_title,
+                    credit=credit,
+                    dept=dept.name
+                )
+    return redirect('portal:admin_department_details', dept_id=dept.id)
+
+def admin_delete_course(request, dept_id, course_id):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+        
+    course = get_object_or_404(Course, id=course_id)
+    course.delete()
+    return redirect('portal:admin_department_details', dept_id=dept_id)
+
+def admin_download_syllabus_pdf(request, dept_id):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+        
+    dept = get_object_or_404(Department, id=dept_id)
+    courses = Course.objects.filter(dept=dept.name).order_by('course_code')
+    
+    template_path = 'portal/admin/syllabus_pdf.html'
+    context = {'department': dept, 'courses': courses}
+    
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="syllabus_{dept.name.replace(" ", "_")}.pdf"'
+    
+    template = get_template(template_path)
+    html = template.render(context)
+    
+    # Create PDF
+    pisa_status = pisa.CreatePDF(html, dest=response)
+    
+    if pisa_status.err:
+        return HttpResponse('We had some errors <pre>' + html + '</pre>')
+    return response
+
+
+def admin_email_result(request):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+
+    import json
+    from django.core.mail import EmailMessage
+    from django.conf import settings as django_settings
+
+    search_results = []
+    selected_student = None
+    is_all_students = False
+    query = request.GET.get('q', '').strip()
+
+    if query:
+        search_results = Student.objects.filter(
+            student_name__icontains=query
+        ) | Student.objects.filter(
+            student_id__icontains=query
+        )
+        search_results = search_results.order_by('student_name')
+
+    selected_student_id = request.GET.get('student', '')
+    if selected_student_id == 'all':
+        is_all_students = True
+    elif selected_student_id:
+        selected_student = Student.objects.filter(id=selected_student_id).first()
+
+    if request.method == 'POST':
+        student_id_post = request.POST.get('student_id')
+        mail_subject = request.POST.get('mail_subject', '').strip()
+        mail_body = request.POST.get('mail_body', '').strip()
+        result_type = request.POST.get('result_type', 'full_history')
+
+        if student_id_post == 'all':
+            students = Student.objects.filter(status='approved')
+            if not students.exists():
+                messages.error(request, '❌ No approved students found to email.')
+                return redirect('portal:admin_email_result')
+
+            success_count = 0
+            error_count = 0
+            errors = []
+            today = date.today()
+
+            for student in students:
+                if not student.email:
+                    continue
+
+                all_results = StudentResult.objects.filter(student=student).select_related('result_sheet')
+
+                if result_type == 'current_semester':
+                    results_to_send = [sr for sr in all_results if not (sr.result_sheet.end_date and sr.result_sheet.end_date < today)]
+                    pdf_filename = f"current_semester_result_{student.student_id}.pdf"
+                else:
+                    results_to_send = list(all_results)
+                    pdf_filename = f"full_result_{student.student_id}.pdf"
+
+                # Calculate CGPA
+                completed_credits = Decimal('0.0')
+                total_cgpa_points = Decimal('0.0')
+                for sr in all_results:
+                    if sr.result_sheet.end_date and sr.result_sheet.end_date < today:
+                        if sr.cgpa is not None and sr.cgpa > 0:
+                            completed_credits += sr.result_sheet.course_credit
+                            total_cgpa_points += (sr.result_sheet.course_credit * sr.cgpa)
+                cumulative_cgpa = round(total_cgpa_points / completed_credits, 2) if completed_credits > 0 else Decimal('0.00')
+
+                # Build PDF in memory
+                template = get_template('portal/admin/result_email_pdf.html')
+                context = {
+                    'student': student,
+                    'results': results_to_send,
+                    'result_type': result_type,
+                    'cumulative_cgpa': cumulative_cgpa,
+                    'completed_credits': completed_credits,
+                }
+                html_content = template.render(context)
+
+                pdf_buffer = BytesIO()
+                pisa_status = pisa.CreatePDF(html_content, dest=pdf_buffer)
+
+                if pisa_status.err:
+                    error_count += 1
+                    continue
+
+                pdf_buffer.seek(0)
+
+                # Template replacements
+                custom_subject = mail_subject.replace("{{ student.student_name }}", student.student_name).replace("{{ student.student_id }}", student.student_id)
+                custom_body = mail_body.replace("{{ selected_student.student_name }}", student.student_name).replace("{{ selected_student.student_id }}", student.student_id)
+                custom_body = custom_body.replace("{{ student.student_name }}", student.student_name).replace("{{ student.student_id }}", student.student_id)
+
+                try:
+                    email = EmailMessage(
+                        subject=custom_subject or f"Your Result — Metropolitan University",
+                        body=custom_body or f"Dear {student.student_name},\n\nPlease find your academic result attached.\n\nBest regards,\nMetropolitan University",
+                        from_email=django_settings.DEFAULT_FROM_EMAIL,
+                        to=[student.email],
+                    )
+                    email.attach(pdf_filename, pdf_buffer.read(), 'application/pdf')
+                    email.send()
+                    success_count += 1
+                except Exception as e:
+                    error_count += 1
+                    errors.append(str(e))
+
+            if success_count > 0:
+                messages.success(request, f"✅ Result emails sent successfully to {success_count} students!")
+            if error_count > 0:
+                messages.error(request, f"❌ Failed to send to {error_count} students. Error: {', '.join(set(errors[:3]))}")
+
+            return redirect('portal:admin_email_result')
+
+        else:
+            recipient_email = request.POST.get('recipient_email', '').strip()
+            student = get_object_or_404(Student, id=student_id_post)
+
+            all_results = StudentResult.objects.filter(student=student).select_related('result_sheet')
+            today = date.today()
+
+            if result_type == 'current_semester':
+                results_to_send = [sr for sr in all_results if not (sr.result_sheet.end_date and sr.result_sheet.end_date < today)]
+                pdf_filename = f"current_semester_result_{student.student_id}.pdf"
+            else:
+                results_to_send = list(all_results)
+                pdf_filename = f"full_result_{student.student_id}.pdf"
+
+            # Calculate CGPA
+            completed_credits = Decimal('0.0')
+            total_cgpa_points = Decimal('0.0')
+            for sr in all_results:
+                if sr.result_sheet.end_date and sr.result_sheet.end_date < today:
+                    if sr.cgpa is not None and sr.cgpa > 0:
+                        completed_credits += sr.result_sheet.course_credit
+                        total_cgpa_points += (sr.result_sheet.course_credit * sr.cgpa)
+            cumulative_cgpa = round(total_cgpa_points / completed_credits, 2) if completed_credits > 0 else Decimal('0.00')
+
+            # Build PDF in memory
+            template = get_template('portal/admin/result_email_pdf.html')
+            context = {
+                'student': student,
+                'results': results_to_send,
+                'result_type': result_type,
+                'cumulative_cgpa': cumulative_cgpa,
+                'completed_credits': completed_credits,
+            }
+            html_content = template.render(context)
+
+            pdf_buffer = BytesIO()
+            pisa_status = pisa.CreatePDF(html_content, dest=pdf_buffer)
+
+            if pisa_status.err:
+                messages.error(request, 'Failed to generate PDF. Please try again.')
+                return redirect('portal:admin_email_result')
+
+            pdf_buffer.seek(0)
+
+            # Template replacements
+            custom_subject = mail_subject.replace("{{ student.student_name }}", student.student_name).replace("{{ student.student_id }}", student.student_id)
+            custom_body = mail_body.replace("{{ selected_student.student_name }}", student.student_name).replace("{{ selected_student.student_id }}", student.student_id)
+            custom_body = custom_body.replace("{{ student.student_name }}", student.student_name).replace("{{ student.student_id }}", student.student_id)
+
+            try:
+                email = EmailMessage(
+                    subject=custom_subject or f"Your Result — Metropolitan University",
+                    body=custom_body or f"Dear {student.student_name},\n\nPlease find your academic result attached.\n\nBest regards,\nMetropolitan University",
+                    from_email=django_settings.DEFAULT_FROM_EMAIL,
+                    to=[recipient_email],
+                )
+                email.attach(pdf_filename, pdf_buffer.read(), 'application/pdf')
+                email.send()
+                messages.success(request, f"✅ Result email sent successfully to {recipient_email}!")
+            except Exception as e:
+                messages.error(request, f"❌ Failed to send email: {str(e)}")
+
+            return redirect('portal:admin_email_result')
+
+    return render(request, 'portal/admin/email_result.html', {
+        'search_results': search_results,
+        'selected_student': selected_student,
+        'is_all_students': is_all_students,
+        'query': query,
+    })
+
+
+def admin_general_email(request):
+    if not _admin_required(request):
+        return redirect('portal:admin_login')
+
+    from django.core.mail import EmailMessage
+    from django.conf import settings as django_settings
+
+    if request.method == 'POST':
+        send_type = request.POST.get('send_type', 'custom')
+        subject = request.POST.get('subject', '').strip()
+        body = request.POST.get('body', '').strip()
+
+        to_list = []
+        if send_type == 'custom':
+            to_emails_raw = request.POST.get('to_emails', '').strip()
+            to_list = [e.strip() for e in to_emails_raw.split(',') if e.strip()]
+            if not to_list:
+                messages.error(request, '❌ Please enter at least one recipient email address.')
+                return redirect('portal:admin_general_email')
+        elif send_type == 'students':
+            to_list = list(Student.objects.filter(status='approved').values_list('email', flat=True))
+            if not to_list:
+                messages.error(request, '❌ No approved students found to email.')
+                return redirect('portal:admin_general_email')
+        elif send_type == 'teachers':
+            to_list = list(Teacher.objects.filter(status='approved').values_list('email', flat=True))
+            if not to_list:
+                messages.error(request, '❌ No approved teachers found to email.')
+                return redirect('portal:admin_general_email')
+        elif send_type == 'everyone':
+            student_emails = list(Student.objects.filter(status='approved').values_list('email', flat=True))
+            teacher_emails = list(Teacher.objects.filter(status='approved').values_list('email', flat=True))
+            to_list = list(set(student_emails + teacher_emails)) # Unique emails
+            if not to_list:
+                messages.error(request, '❌ No approved students or teachers found to email.')
+                return redirect('portal:admin_general_email')
+
+        if not subject:
+            messages.error(request, '❌ Subject cannot be empty.')
+            return redirect('portal:admin_general_email')
+        if not body:
+            messages.error(request, '❌ Email body cannot be empty.')
+            return redirect('portal:admin_general_email')
+
+        try:
+            email = EmailMessage(
+                subject=subject,
+                body=body,
+                from_email=django_settings.DEFAULT_FROM_EMAIL,
+                to=to_list,
+            )
+            email.send()
+            count = len(to_list)
+            messages.success(request, f"✅ Email sent successfully to {count} recipient{'s' if count > 1 else ''}!")
+        except Exception as e:
+            messages.error(request, f"❌ Failed to send email: {str(e)}")
+
+        return redirect('portal:admin_general_email')
+
+    return render(request, 'portal/admin/general_email.html')

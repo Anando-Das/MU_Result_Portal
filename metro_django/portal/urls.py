@@ -12,6 +12,7 @@ urlpatterns = [
     path('login', views.student_login, name='login'),
     path('logout', views.student_logout, name='logout'),
     path('dashboard', views.student_dashboard, name='dashboard'),
+    path('dashboard/syllabus/download', views.student_download_syllabus_pdf, name='student_download_syllabus_pdf'),
 
     # Teacher Auth & Pages
     path('teachers/', views.teacher_login, name='teachers.login'),
@@ -64,4 +65,12 @@ urlpatterns = [
     path('mu-admin/teachers/<int:teacher_id>/delete/', views.admin_delete_teacher, name='admin_delete_teacher'),
     path('mu-admin/teachers/<int:teacher_id>/toggle-status/', views.admin_toggle_teacher_status, name='admin_toggle_teacher_status'),
     path('mu-admin/teachers/approve-all/', views.admin_approve_all_teachers, name='admin_approve_all_teachers'),
+    path('mu-admin/departments/', views.admin_departments, name='admin_departments'),
+    path('mu-admin/departments/create/', views.admin_create_department, name='admin_create_department'),
+    path('mu-admin/departments/<int:dept_id>/', views.admin_department_details, name='admin_department_details'),
+    path('mu-admin/departments/<int:dept_id>/add-course/', views.admin_add_course, name='admin_add_course'),
+    path('mu-admin/departments/<int:dept_id>/download-pdf/', views.admin_download_syllabus_pdf, name='admin_download_syllabus_pdf'),
+    path('mu-admin/departments/<int:dept_id>/delete-course/<int:course_id>/', views.admin_delete_course, name='admin_delete_course'),
+    path('mu-admin/email-results/', views.admin_email_result, name='admin_email_result'),
+    path('mu-admin/general-email/', views.admin_general_email, name='admin_general_email'),
 ]
